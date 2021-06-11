@@ -1,0 +1,23 @@
+$step2-color: #ff449f;
+$step2-border: 2px solid $step2-color;
+
+.step2 {
+  .step2__action {
+    display: flex;
+    grid-gap: 10px;
+    gap: 10px;
+    justify-content: flex-end;
+    margin: 10px;
+
+    .btn {
+      &.solid {
+        background: $step2-color;
+      }
+
+      &.outlined {
+        color: $step2-color;
+        border: $step2-border;
+      }
+    }
+  }
+}

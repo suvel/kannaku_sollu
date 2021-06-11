@@ -1,0 +1,105 @@
+$step1-color: #00ead3;
+$step2-color: #ff449f;
+$step3-color: #005f99;
+$step4-color: #000000;
+
+.step {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr 1fr;
+  grid-template-rows: 0.4fr auto;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "step__head step__head step__head"
+    "step__desc step__main step__main"
+    "step__desc step__main step__main";
+  width: 100%;
+
+  .step__desc {
+    grid-area: step__desc;
+    display: grid;
+    place-content: center;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .step__head {
+    display: grid;
+    grid-template-columns: 0.6fr 0.4fr 2fr;
+    grid-template-rows: 1.2fr 1fr 0.8fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "step__stringno step__bigno ."
+      "step__stringno step__bigno ."
+      "step__stringno step__bigno .";
+    grid-area: step__head;
+  }
+
+  .step__stringno {
+    grid-area: step__stringno;
+    text-align: end;
+    margin: auto 0;
+    font-size: 36px;
+    font-weight: 500;
+  }
+
+  .step__bigno {
+    grid-area: step__bigno;
+
+    .step__no {
+      height: 100%;
+      width: 80px;
+      margin: auto;
+      display: grid;
+      place-content: center;
+      border-radius: 10px;
+      font-size: 36px;
+      color: white;
+    }
+  }
+
+  .step__main {
+    grid-area: step__main;
+    display: grid;
+    place-content: center;
+    border-bottom: 1px solid #0000001c;
+    margin-bottom: 10px;
+    padding: calc(100vh / 4) 0;
+  }
+}
+
+.step {
+  &.step1 {
+    .step__no {
+      background: $step1-color;
+    }
+    .step__main {
+      border-left: 3px solid $step1-color;
+    }
+  }
+  &.step2 {
+    .step__no {
+      background: $step2-color;
+    }
+    .step__main {
+      border-left: 3px solid $step2-color;
+    }
+  }
+  &.step3 {
+    .step__no {
+      background: $step3-color;
+    }
+    .step__main {
+      border-left: 3px solid $step3-color;
+    }
+  }
+  &.step4 {
+    .step__no {
+      background: $step4-color;
+    }
+    .step__main {
+      border-left: 3px solid $step4-color;
+    }
+  }
+}
