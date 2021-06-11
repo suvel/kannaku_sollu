@@ -1,6 +1,6 @@
-
+import './Step4.scss'
 const Step4 = () => {
-    return (<div>
+    return (<div className='bill-print'>
         {
             `Grocerry Bill\n
             \n
@@ -20,6 +20,12 @@ const Step4 = () => {
             \n
             [Bill Total]\n
             320
+            \n
+            products dictionary:
+            \n
+            \t[🍎]: Apple
+            \t[🍪]: Cookie
+
             `
         }
     </div>)
