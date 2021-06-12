@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Modal from './Modal'
 import Form,
 { FormTitle, FormInputGroup, FormAction, Row, Col, FormInput } from './Form'
 import Button from './Button'
+import { AppContext } from '../context/AppProvider'
 import './AddMemberModal.scss'
 
 const AddMemberModal = ({ show, toggleShow }) => {

@@ -8,10 +8,6 @@ const Step3 = ({ toggleAddToBillModal }) => {
     const columns = React.useMemo(
         () => [
             {
-                Header: '#',
-                accessor: 'sno'
-            },
-            {
                 Header: 'MEMBER',
                 accessor: 'memName'
             },
@@ -30,13 +26,11 @@ const Step3 = ({ toggleAddToBillModal }) => {
     const data = React.useMemo(
         () => [
             {
-                'sno': 1,
                 'memName': 'Mark Stain',
                 'prodExp': '2x🍎+3x🍪',
                 'total': 70
             },
             {
-                'sno': 2,
                 'memName': 'Drake Remorey',
                 'prodExp': '1x☕+2x🚬+1x🍪',
                 'total': 38

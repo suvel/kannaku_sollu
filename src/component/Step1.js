@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Step1.scss'
 import Table from './Table'
 import Button from './Button'
+import { AppContext } from '../context/AppProvider'
 
 const Step1 = ({ toggleAddPrdModal }) => {
+    const { state } = useContext(AppContext);
 
     const columns = React.useMemo(
         () => [
-            {
-                Header: '#',
-                accessor: 'sno'
-            },
             {
                 Header: 'ICON',
                 accessor: 'icon'
@@ -28,33 +26,8 @@ const Step1 = ({ toggleAddPrdModal }) => {
     )
 
     const data = React.useMemo(
-        () => [
-            {
-                'sno': '1',
-                'icon': '🍪',
-                'prdName': 'Butter Biscuit',
-                'prdPrice': '10',
-            },
-            {
-                'sno': '2',
-                'icon': '🍎',
-                'prdName': 'Apple',
-                'prdPrice': '20',
-            },
-            {
-                'sno': '3',
-                'icon': '🚬',
-                'prdName': 'Cigaret',
-                'prdPrice': '18',
-            },
-            {
-                'sno': '4',
-                'icon': '☕',
-                'prdName': 'Coffee',
-                'prdPrice': '10',
-            },
-        ],
-        []
+        () => state?.products || [],
+        [state]
     )
 
     return (

@@ -1,7 +1,17 @@
 import { useTable } from 'react-table'
 import './Table.scss'
 
+const getDataUpdated = (dataArr) => {
+    return dataArr.map((data, index) => ({ ...data, sno: index + 1 }))
+}
+
 function Table({ columns, data, style }) {
+
+    columns.unshift({
+        Header: '#',
+        accessor: 'sno'
+    })
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -9,8 +19,8 @@ function Table({ columns, data, style }) {
         rows,
         prepareRow,
     } = useTable({
-        columns,
-        data,
+        columns: columns,
+        data: getDataUpdated(data),
     })
 
     return (

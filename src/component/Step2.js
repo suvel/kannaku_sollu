@@ -8,10 +8,6 @@ const Step2 = ({ toggleAddMemberModal }) => {
     const columns = React.useMemo(
         () => [
             {
-                Header: '#',
-                accessor: 'sno'
-            },
-            {
                 Header: 'NAME',
                 accessor: 'memName'
             },
@@ -22,11 +18,9 @@ const Step2 = ({ toggleAddMemberModal }) => {
     const data = React.useMemo(
         () => [
             {
-                'sno': '1',
                 'memName': 'Mark Stain',
             },
             {
-                'sno': '2',
                 'memName': 'Drake Remorey',
             },
         ],
