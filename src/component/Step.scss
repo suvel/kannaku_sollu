@@ -4,6 +4,7 @@ $step3-color: #005f99;
 $step4-color: #000000;
 
 .step {
+  position: relative;
   display: grid;
   grid-template-columns: 0.8fr 1.2fr 1fr;
   grid-template-rows: 0.4fr auto;

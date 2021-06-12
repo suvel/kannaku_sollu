@@ -1,0 +1,20 @@
+$step3-color: #005f99;
+
+.add-to-bill-modal___container {
+  width: 426px;
+  height: 315px;
+  background-color: $step3-color;
+
+  .btn {
+    &.solid {
+      background: #ffffff;
+      color: $step3-color;
+    }
+
+    &.outlined {
+      color: #ffffff;
+      background: $step3-color;
+      border: 2px solid #ffffff;
+    }
+  }
+}

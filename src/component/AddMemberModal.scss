@@ -1,0 +1,20 @@
+$step2-color: #ff449f;
+
+.add-member-modal___container {
+  width: 426px;
+  height: 249px;
+  background-color: $step2-color;
+
+  .btn {
+    &.solid {
+      background: #ffffff;
+      color: $step2-color;
+    }
+
+    &.outlined {
+      color: #ffffff;
+      background: $step2-color;
+      border: 2px solid #ffffff;
+    }
+  }
+}

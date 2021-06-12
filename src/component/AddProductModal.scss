@@ -1,0 +1,20 @@
+$step1-color: #00ead3;
+
+.add-product-modal___container {
+  width: 426px;
+  height: 356px;
+  background-color: $step1-color;
+
+  .btn {
+    &.solid {
+      background: #ffffff;
+      color: $step1-color;
+    }
+
+    &.outlined {
+      color: #ffffff;
+      background: $step1-color;
+      border: 2px solid #ffffff;
+    }
+  }
+}
