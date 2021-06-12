@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Step3.scss'
 import Table from './Table'
 import Button from './Button'
+import {AppContext} from '../context/AppProvider'
 
 const Step3 = ({ toggleAddToBillModal }) => {
+
+    const { state } = useContext(AppContext);
 
     const columns = React.useMemo(
         () => [
@@ -23,25 +26,9 @@ const Step3 = ({ toggleAddToBillModal }) => {
         []
     )
 
-    const data = React.useMemo(
-        () => [
-            {
-                'memName': 'Mark Stain',
-                'prodExp': '2x🍎+3x🍪',
-                'total': 70
-            },
-            {
-                'memName': 'Drake Remorey',
-                'prodExp': '1x☕+2x🚬+1x🍪',
-                'total': 38
-            },
-        ],
-        []
-    )
-
     return (
         <div className="step3">
-            <Table style={{ width: "600px" }} columns={columns} data={data} />
+            <Table style={{ width: "600px" }} columns={columns} data={state?.bills} />
             <div className='step3__action'>
                 <Button
                     onClick={() => toggleAddToBillModal(true)}

@@ -28,6 +28,18 @@ const initialArg = {
         {
             'memName': 'Drake Remorey',
         },
+    ],
+    bills: [
+        {
+            'memName': 'Mark Stain',
+            'prodExp': '2x🍎+3x🍪',
+            'total': 70
+        },
+        {
+            'memName': 'Drake Remorey',
+            'prodExp': '1x☕+2x🚬+1x🍪',
+            'total': 38
+        }
     ]
 };
 
@@ -38,6 +50,8 @@ function reducer(state, action) {
             return { ...state, products: action.value };
         case 'SET_MEM':
             return { ...state, members: action.value };
+        case 'SET_BILLS':
+            return { ...state, bills: action.value };
         default:
             throw new Error();
     }
