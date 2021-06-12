@@ -39,8 +39,9 @@ const initialArg = {
             'memName': 'Drake Remorey',
             'prodExp': '1x☕+2x🚬+1x🍪',
             'total': 38
-        }
-    ]
+        },
+    ],
+    billName: 'Grocerry Bill'
 };
 
 function reducer(state, action) {

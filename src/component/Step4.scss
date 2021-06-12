@@ -1,6 +1,31 @@
+$step4-color: #000000;
+$step4-border: 2px solid $step4-color;
+
 .bill-print {
+}
+
+.bill-pint__text {
   padding: 20px;
   border: 2px solid;
   border-radius: 10px;
   white-space: break-spaces;
+}
+
+.bill-print__action {
+  display: flex;
+  grid-gap: 10px;
+  gap: 10px;
+  justify-content: flex-end;
+  margin: 10px;
+  
+  .btn {
+    &.solid {
+      background: $step4-color;
+    }
+
+    &.outlined {
+      color: $step4-color;
+      border: $step4-border;
+    }
+  }
 }
