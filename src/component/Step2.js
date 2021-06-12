@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Step2.scss'
 import Table from './Table'
 import Button from './Button'
+import { AppContext } from '../context/AppProvider'
 
 const Step2 = ({ toggleAddMemberModal }) => {
+
+    const { state } = useContext(AppContext)
 
     const columns = React.useMemo(
         () => [
@@ -15,21 +18,9 @@ const Step2 = ({ toggleAddMemberModal }) => {
         []
     )
 
-    const data = React.useMemo(
-        () => [
-            {
-                'memName': 'Mark Stain',
-            },
-            {
-                'memName': 'Drake Remorey',
-            },
-        ],
-        []
-    )
-
     return (
         <div className="step2">
-            <Table style={{ width: "600px" }} columns={columns} data={data} />
+            <Table style={{ width: "600px" }} columns={columns} data={state?.members} />
             <div className='step2__action'>
                 <Button
                     onClick={() => toggleAddMemberModal(true)}

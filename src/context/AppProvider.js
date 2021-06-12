@@ -20,7 +20,15 @@ const initialArg = {
         'icon': '☕',
         'prdName': 'Coffee',
         'prdPrice': '10',
-    },]
+    },],
+    members: [
+        {
+            'memName': 'Mark Stain',
+        },
+        {
+            'memName': 'Drake Remorey',
+        },
+    ]
 };
 
 function reducer(state, action) {
@@ -28,6 +36,8 @@ function reducer(state, action) {
     switch (action.type) {
         case 'SET_PROD':
             return { ...state, products: action.value };
+        case 'SET_MEM':
+            return { ...state, members: action.value };
         default:
             throw new Error();
     }
