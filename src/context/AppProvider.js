@@ -41,7 +41,7 @@ const initialArg = {
             'total': 38
         },
     ],
-    billName: 'Grocerry Bill'
+    billName: 'Untitled Bill'
 };
 
 function reducer(state, action) {
