@@ -3,7 +3,7 @@ import './Step1.scss'
 import Table from './Table'
 import Button from './Button'
 
-const Step1 = () => {
+const Step1 = ({ toggleAddPrdModal }) => {
 
     const columns = React.useMemo(
         () => [
@@ -61,7 +61,7 @@ const Step1 = () => {
         <div className="step1">
             <Table style={{ width: "600px" }} columns={columns} data={data} />
             <div className='step1__action'>
-                <Button name={"Add"} variant={"solid"} />
+                <Button onClick={() => toggleAddPrdModal(true)} name={"Add"} variant={"solid"} />
                 <Button name={"Remove"} variant={"outlined"} />
             </div>
         </div>

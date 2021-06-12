@@ -5,9 +5,9 @@ import Form,
 import Button from './Button'
 import './AddToBillModal.scss'
 
-const AddToBillModal = () => {
+const AddToBillModal = ({ show, toggleShow }) => {
     return (
-        <Modal>
+        <Modal show={show}>
             <div className='add-to-bill-modal___container'>
                 <Form>
                     <FormTitle>
@@ -38,7 +38,11 @@ const AddToBillModal = () => {
                     </FormInputGroup>
                     <FormAction>
                         <Button name={"Submit"} variant={"solid"} />
-                        <Button name={"Cancel"} variant={"outlined"} />
+                        <Button
+                            onClick={() => toggleShow(false)}
+                            name={"Cancel"}
+                            variant={"outlined"}
+                        />
                     </FormAction>
                 </Form>
             </div>

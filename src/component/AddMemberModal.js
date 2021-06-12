@@ -5,9 +5,9 @@ import Form,
 import Button from './Button'
 import './AddMemberModal.scss'
 
-const AddMemberModal = () => {
+const AddMemberModal = ({ show, toggleShow }) => {
     return (
-        <Modal>
+        <Modal show={show}>
             <div className='add-member-modal___container'>
                 <Form>
                     <FormTitle>
@@ -22,7 +22,11 @@ const AddMemberModal = () => {
                     </FormInputGroup>
                     <FormAction>
                         <Button name={"Submit"} variant={"solid"} />
-                        <Button name={"Cancel"} variant={"outlined"} />
+                        <Button
+                            onClick={() => toggleShow(false)}
+                            name={"Cancel"}
+                            variant={"outlined"}
+                        />
                     </FormAction>
                 </Form>
             </div>

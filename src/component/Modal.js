@@ -1,11 +1,11 @@
 import React from 'react'
 import './Modal.scss'
 
-const Modal = ({ children }) => {
+const Modal = ({ children, show }) => {
     return (
-        <div className='modal__container'>
+        <div className={`modal__container show-${show}`} >
             {children}
-        </div>
+        </div >
     )
 }
 

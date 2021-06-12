@@ -4,9 +4,9 @@ import Button from './Button'
 import './AddProductModal.scss'
 import Form,
 { FormTitle, FormInputGroup, FormAction, Row, Col, FormInput } from './Form'
-const AddProductModal = () => {
+const AddProductModal = ({ show, toggleShow }) => {
     return (
-        <Modal>
+        <Modal show={show}>
             <div className='add-product-modal___container'>
                 <Form>
                     <FormTitle>
@@ -29,7 +29,11 @@ const AddProductModal = () => {
                     </FormInputGroup>
                     <FormAction>
                         <Button name={"Submit"} variant={"solid"} />
-                        <Button name={"Cancel"} variant={"outlined"} />
+                        <Button
+                            onClick={() => toggleShow(false)}
+                            name={"Cancel"}
+                            variant={"outlined"}
+                        />
                     </FormAction>
                 </Form>
             </div>
