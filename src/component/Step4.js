@@ -13,7 +13,6 @@ const generateBill = (billName, bills, products) => {
         let billString = ``;
         let billTotal = 0;
         bills.forEach((bill, index) => {
-            debugger
             billString = billString.concat(`
             [${index + 1}]
             \n
@@ -22,7 +21,6 @@ const generateBill = (billName, bills, products) => {
              _Member total_:\t${bill.total}\n
             \n
             `)
-            debugger
             billTotal = billTotal + bill.total;
         })
         return ({
@@ -51,14 +49,14 @@ const Step4 = () => {
     const { state } = useContext(AppContext);
     const [billDetail, setBillDetail] = useState({
         name: state.billName,
-        bills: state.bills,
+        shares: state.shares,
         products: state.products
     })
 
     const handelReprint = () => {
         setBillDetail({
             name: state.billName,
-            bills: state.bills,
+            shares: state.shares,
             products: state.products
         })
     }
@@ -76,7 +74,7 @@ const Step4 = () => {
             {
                 generateBill(
                     billDetail.name,
-                    billDetail.bills,
+                    billDetail.shares,
                     billDetail.products
                 )
             }

@@ -4,7 +4,7 @@ import Button from './Button'
 import './AddProductModal.scss'
 import Form,
 { FormTitle, FormInputGroup, FormAction, Row, Col, FormInput } from './Form'
-import { AppContext } from '../context/AppProvider'
+import { AppContext, reducerActTypes } from '../context/AppProvider'
 
 const initFormData = {
     icon: '',
@@ -18,16 +18,20 @@ const AddProductModal = ({ show, toggleShow }) => {
 
     const [formData, setFormData] = useState(initFormData);
 
-    const handelChangeFormData = (e, type) => {
+    const closeModal = () => {
+        toggleShow(false);
+        setFormData(initFormData);
+    }
+
+    const handelFormDataChange = (e, type) => {
         const value = e.target.value;
         setFormData(val => ({ ...val, [type]: value }))
     }
 
     const handelSubmit = () => {
         const newProducts = [...state.products, formData]
-        dispatch({ type: 'SET_PROD', value: newProducts });
-        toggleShow(false);
-        setFormData(initFormData);
+        dispatch({ type: reducerActTypes.SET_PRODUCT, value: newProducts });
+        closeModal();
     }
 
     return (
@@ -46,7 +50,7 @@ const AddProductModal = ({ show, toggleShow }) => {
                                         <input
                                             value={formData.name}
                                             onChange={e => {
-                                                handelChangeFormData(e, 'prdName')
+                                                handelFormDataChange(e, 'prdName')
                                             }}
                                         />
                                     }
@@ -61,7 +65,7 @@ const AddProductModal = ({ show, toggleShow }) => {
                                         <input
                                             value={formData.icon}
                                             onChange={e => {
-                                                handelChangeFormData(e, 'icon')
+                                                handelFormDataChange(e, 'icon')
                                             }}
                                         />
                                     }
@@ -74,7 +78,7 @@ const AddProductModal = ({ show, toggleShow }) => {
                                         <input
                                             value={formData.price}
                                             onChange={e => {
-                                                handelChangeFormData(e, 'prdPrice')
+                                                handelFormDataChange(e, 'prdPrice')
                                             }}
                                         />
                                     } />

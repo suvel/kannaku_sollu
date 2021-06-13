@@ -2,6 +2,7 @@ $step4-color: #000000;
 $step4-border: 2px solid $step4-color;
 
 .bill-print {
+  min-width: 600px;
 }
 
 .bill-pint__text {
@@ -17,7 +18,7 @@ $step4-border: 2px solid $step4-color;
   gap: 10px;
   justify-content: flex-end;
   margin: 10px;
-  
+
   .btn {
     &.solid {
       background: $step4-color;

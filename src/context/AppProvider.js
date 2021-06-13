@@ -29,7 +29,7 @@ const initialArg = {
             'memName': 'Drake Remorey',
         },
     ],
-    bills: [
+    shares: [
         {
             'memName': 'Mark Stain',
             'prodExp': '2x🍎+3x🍪',
@@ -44,15 +44,21 @@ const initialArg = {
     billName: 'Untitled Bill'
 };
 
+const reducerActTypes = {
+    SET_PRODUCT: 'SET_PROD',
+    SET_MEMBER: 'SET_MEMBER',
+    SET_SHARE: 'SET_SHARE'
+}
+
 function reducer(state, action) {
     debugger
     switch (action.type) {
-        case 'SET_PROD':
+        case reducerActTypes.SET_PRODUCT:
             return { ...state, products: action.value };
-        case 'SET_MEM':
+        case reducerActTypes.SET_MEMBER:
             return { ...state, members: action.value };
-        case 'SET_BILLS':
-            return { ...state, bills: action.value };
+        case reducerActTypes.SET_SHARE:
+            return { ...state, shares: action.value };
         default:
             throw new Error();
     }
@@ -71,5 +77,5 @@ const AppProvider = ({ children }) => {
     )
 }
 
-export { AppContext };
+export { AppContext, reducerActTypes };
 export default AppProvider;

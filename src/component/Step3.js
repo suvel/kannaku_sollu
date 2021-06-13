@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './Step3.scss'
 import Table from './Table'
 import Button from './Button'
-import {AppContext} from '../context/AppProvider'
+import { AppContext } from '../context/AppProvider'
 
 const Step3 = ({ toggleAddToBillModal }) => {
 
@@ -28,7 +28,7 @@ const Step3 = ({ toggleAddToBillModal }) => {
 
     return (
         <div className="step3">
-            <Table style={{ width: "600px" }} columns={columns} data={state?.bills} />
+            <Table columns={columns} data={state?.shares} />
             <div className='step3__action'>
                 <Button
                     onClick={() => toggleAddToBillModal(true)}

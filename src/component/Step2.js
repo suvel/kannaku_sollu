@@ -20,7 +20,7 @@ const Step2 = ({ toggleAddMemberModal }) => {
 
     return (
         <div className="step2">
-            <Table style={{ width: "600px" }} columns={columns} data={state?.members} />
+            <Table columns={columns} data={state?.members} />
             <div className='step2__action'>
                 <Button
                     onClick={() => toggleAddMemberModal(true)}

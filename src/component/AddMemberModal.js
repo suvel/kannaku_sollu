@@ -3,7 +3,7 @@ import Modal from './Modal'
 import Form,
 { FormTitle, FormInputGroup, FormAction, Row, Col, FormInput } from './Form'
 import Button from './Button'
-import { AppContext } from '../context/AppProvider'
+import { AppContext, reducerActTypes } from '../context/AppProvider'
 import './AddMemberModal.scss'
 
 const AddMemberModal = ({ show, toggleShow }) => {
@@ -12,7 +12,7 @@ const AddMemberModal = ({ show, toggleShow }) => {
 
     const handelSubmit = () => {
         const members = [...state.members, { memName }]
-        dispatch({ type: 'SET_MEM', value: members })
+        dispatch({ type: reducerActTypes.SET_MEMBER, value: members })
         toggleShow(false);
         setMemName('');
     }

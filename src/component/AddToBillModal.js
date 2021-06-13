@@ -4,7 +4,7 @@ import Form,
 { FormTitle, FormInputGroup, FormAction, Row, Col, FormInput } from './Form'
 import Button from './Button'
 import VariableExpressionInput from './VariableExpressionInput'
-import { AppContext } from '../context/AppProvider'
+import { AppContext, reducerActTypes } from '../context/AppProvider'
 import './AddToBillModal.scss'
 
 const calculateTotal = (expStr, products) => {
@@ -41,15 +41,15 @@ const AddToBillModal = ({ show, toggleShow }) => {
     }
 
     const handelSubmit = () => {
-        const newBillingObj = {
+        const newShareObj = {
             'memName': state.members[selectedIndex].memName,
             'prodExp': prdExp,
             'total': calculateTotal(prdExp, state.products)
         }
 
-        const newBills = [...state.bills, newBillingObj]
+        const newShares = [...state.shares, newShareObj]
 
-        dispatch({ type: 'SET_BILLS', value: newBills })
+        dispatch({ type: reducerActTypes.SET_SHARE, value: newShares })
         //reset
         setPrdExp('');
         setSelectedIndex(0);
