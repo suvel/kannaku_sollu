@@ -50,7 +50,11 @@ const AddToBillModal = ({ show, toggleShow }) => {
         const newBills = [...state.bills, newBillingObj]
 
         dispatch({ type: 'SET_BILLS', value: newBills })
+        //reset
+        setPrdExp('');
+        setSelectedIndex(0);
 
+        toggleShow(false)
     }
 
     return (
@@ -72,6 +76,7 @@ const AddToBillModal = ({ show, toggleShow }) => {
                                                 setSelectedIndex(e.target.value)
                                             }}
                                         >
+                                            <option value='' selected>Select Member</option>
                                             {
                                                 getMembersOptions()
                                             }
