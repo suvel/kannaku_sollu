@@ -8,6 +8,8 @@ import AddProductModal from './AddProductModal'
 import AddMemberModal from './AddMemberModal'
 import AddToBillModal from './AddToBillModal'
 import './MainApp.scss'
+import { Element, scroller } from 'react-scroll'
+
 
 const MainApp = () => {
 
@@ -15,10 +17,20 @@ const MainApp = () => {
     const [showAddMemModal, setShowAddMemModal] = useState(false);
     const [showAddToBillModal, setShowAddToBillModal] = useState(false);
 
+    const [showStep, setShowStep] = useState(1);
+
+
+
     const stepsObject = useMemo(() => {
+
+        const canStepShown = (stepNum) => {
+            return showStep >= stepNum
+        }
+
         return [
             {
                 no: 1,
+                show: canStepShown(1),
                 description: "Let’s start adding Products 🎉",
                 component: (
                     <>
@@ -32,6 +44,7 @@ const MainApp = () => {
             },
             {
                 no: 2,
+                show: canStepShown(2),
                 description: "Greater!..😊, now add the Members.",
                 component: (
                     <>
@@ -45,6 +58,7 @@ const MainApp = () => {
             },
             {
                 no: 3,
+                show: canStepShown(3),
                 description: "OK!..., Let’s now starting billing them🤑.",
                 component: (
                     <>
@@ -58,23 +72,38 @@ const MainApp = () => {
             },
             {
                 no: 4,
+                show: canStepShown(4),
                 description: "Let’s make some money ...💸",
                 component: (
                     <Step4 />
                 )
             }
         ]
-    }, [showAddProdModal, showAddMemModal, showAddToBillModal])
+    }, [showAddProdModal, showAddMemModal, showAddToBillModal, showStep])
+
+    const handelGoingNxtStep = (nxtStepNumber) => {
+        setShowStep(nxtStepNumber)
+        scroller.scrollTo(`step-${nxtStepNumber}`, {
+            duration: 800,
+            delay: 0,
+            smooth: 'easeInOutQuart',
+        })
+    }
 
     return (
         stepsObject?.map(step => {
             return (
-                <Step
-                    number={step.no}
-                    description={step.description}
-                >
-                    {step.component}
-                </Step>
+                <Element name={`step-${step.no}`}>
+                    <Step
+                        number={step.no}
+                        description={step.description}
+                        goToNxtStep={handelGoingNxtStep}
+                        show={step.show}
+                        currentStep={showStep}
+                    >
+                        {step.component}
+                    </Step>
+                </Element>
             )
         })
     )

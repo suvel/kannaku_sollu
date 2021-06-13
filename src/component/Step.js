@@ -1,9 +1,13 @@
 import React from 'react'
+import Button from './Button'
 import './Step.scss'
 
-const Step = ({ number, description, children }) => {
+const Step = ({ number, description, children, goToNxtStep, show, currentStep }) => {
+
+    const showWhatNxtBtn = number < 4 && currentStep == number;
+
     return (
-        <div class={`step step${number}`}>
+        <div class={`step step${number} show_${show}`}>
             <div class="step__desc">
                 {description}
             </div>
@@ -17,8 +21,15 @@ const Step = ({ number, description, children }) => {
             </div>
             <div class="step__main">
                 {children}
+                <div className={`step__next-action show_${showWhatNxtBtn}`}>
+                    <Button
+                        name={'What Next 🤷‍♀️?'}
+                        onClick={() => goToNxtStep(number + 1)}
+                        variant={'solid'}
+                    />
+                </div>
             </div>
-        </div>
+        </div >
     )
 }
 
