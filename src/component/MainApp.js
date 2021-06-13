@@ -91,9 +91,9 @@ const MainApp = () => {
     }
 
     return (
-        stepsObject?.map(step => {
+        stepsObject?.map((step, index) => {
             return (
-                <Element name={`step-${step.no}`}>
+                <Element key={index} name={`step-${step.no}`}>
                     <Step
                         number={step.no}
                         description={step.description}

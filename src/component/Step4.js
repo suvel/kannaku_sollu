@@ -61,16 +61,29 @@ const Step4 = () => {
         })
     }
 
+    const handelCopyBill = () => {
+        let range = document.createRange();
+        range.selectNode(document.getElementById('bill-text'));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        alert('copied!');
+    }
+
     return (<div className='bill-print'>
         <div className='bill-print__action'>
-            <Button name={"Copy"} variant={"solid"} />
+            <Button
+                onClick={handelCopyBill}
+                name={"Copy"}
+                variant={"solid"} />
             <Button
                 onClick={handelReprint}
                 name={"Re-print"}
                 variant={"outlined"}
             />
         </div>
-        <div className='bill-pint__text'>
+        <div id='bill-text' className='bill-pint__text'>
             {
                 generateBill(
                     billDetail.name,

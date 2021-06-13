@@ -4,9 +4,9 @@ import './App.scss';
 
 function App() {
   return (
-    <div class="container">
-      <div class="header"></div>
-      <div class="mainbody">
+    <div className="container">
+      <div className="header"></div>
+      <div className="mainbody">
         <AppProvider>
           <MainApp />
         </AppProvider>

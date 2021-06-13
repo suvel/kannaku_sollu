@@ -39,19 +39,19 @@ const Step = ({ number, description, children, goToNxtStep, currentStep, show })
 
     return (
         show &&
-        <div key={number} class={`step step${number}`}>
-            <animated.div style={slowL2RAnimationStyle} class="step__desc">
+        <div key={number} className={`step step${number}`}>
+            <animated.div style={slowL2RAnimationStyle} className="step__desc">
                 {description}
             </animated.div>
-            <div class="step__head">
-                <animated.div style={fastL2RAnimationStyle} class="step__stringno">
+            <div className="step__head">
+                <animated.div style={fastL2RAnimationStyle} className="step__stringno">
                     {`Step ${number}`}
                 </animated.div>
-                <animated.div style={fastT2BAnimationStyle} class="step__bigno">
+                <animated.div style={fastT2BAnimationStyle} className="step__bigno">
                     <div className="step__no">{number}</div>
                 </animated.div>
             </div>
-            <animated.div style={fastT2BAnimationStyle} class="step__main">
+            <animated.div style={fastT2BAnimationStyle} className="step__main">
                 {children}
                 <div className={`step__next-action show_${showWhatNxtBtn}`}>
                     <Button
