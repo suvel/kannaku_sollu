@@ -1,25 +1,57 @@
 import React from 'react'
 import Button from './Button'
+import { useSpring, animated } from 'react-spring'
 import './Step.scss'
 
-const Step = ({ number, description, children, goToNxtStep, show, currentStep }) => {
+const Step = ({ number, description, children, goToNxtStep, currentStep, show }) => {
 
     const showWhatNxtBtn = number < 4 && currentStep == number;
 
+    const slowL2RAnimationStyle = useSpring({
+        repeat: true,
+        cancel: currentStep < number,
+        to: [
+            { opacity: 1, transform: 'translateX(0px)' },
+        ],
+        from: { opacity: 0, transform: 'translateX(-500px)' },
+        delay: 500
+    })
+
+    const fastL2RAnimationStyle = useSpring({
+        repeat: true,
+        cancel: currentStep < number,
+        to: [
+            { opacity: 1, transform: 'translateX(0px)' },
+        ],
+        from: { opacity: 0, transform: 'translateX(-500px)' },
+        delay: 250
+    })
+
+    const fastT2BAnimationStyle = useSpring({
+        repeat: true,
+        cancel: currentStep < number,
+        to: [
+            { opacity: 1, transform: 'translateY(0px)' },
+        ],
+        from: { opacity: 0, transform: 'translateY(-500px)' },
+        delay: 250
+    })
+
     return (
-        <div class={`step step${number} show_${show}`}>
-            <div class="step__desc">
+        show &&
+        <div key={number} class={`step step${number}`}>
+            <animated.div style={slowL2RAnimationStyle} class="step__desc">
                 {description}
-            </div>
+            </animated.div>
             <div class="step__head">
-                <div class="step__stringno">
+                <animated.div style={fastL2RAnimationStyle} class="step__stringno">
                     {`Step ${number}`}
-                </div>
-                <div class="step__bigno">
+                </animated.div>
+                <animated.div style={fastT2BAnimationStyle} class="step__bigno">
                     <div className="step__no">{number}</div>
-                </div>
+                </animated.div>
             </div>
-            <div class="step__main">
+            <animated.div style={fastT2BAnimationStyle} class="step__main">
                 {children}
                 <div className={`step__next-action show_${showWhatNxtBtn}`}>
                     <Button
@@ -28,7 +60,7 @@ const Step = ({ number, description, children, goToNxtStep, show, currentStep })
                         variant={'solid'}
                     />
                 </div>
-            </div>
+            </animated.div>
         </div >
     )
 }
