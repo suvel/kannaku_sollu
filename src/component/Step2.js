@@ -27,7 +27,7 @@ const Step2 = ({ toggleAddMemberModal }) => {
                     name={"Add"}
                     variant={"solid"}
                 />
-                <Button name={"Remove"} variant={"outlined"} />
+                {/* <Button name={"Remove"} variant={"outlined"} /> */}
             </div>
         </div>
     )

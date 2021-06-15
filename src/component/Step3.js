@@ -35,7 +35,7 @@ const Step3 = ({ toggleAddToBillModal }) => {
                     name={"Add"}
                     variant={"solid"}
                 />
-                <Button name={"Remove"} variant={"outlined"} />
+                {/* <Button name={"Remove"} variant={"outlined"} /> */}
             </div>
         </div>
     )

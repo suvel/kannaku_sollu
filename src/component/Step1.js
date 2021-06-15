@@ -35,7 +35,7 @@ const Step1 = ({ toggleAddPrdModal }) => {
             <Table style={{ width: "600px" }} columns={columns} data={data} />
             <div className='step1__action'>
                 <Button onClick={() => toggleAddPrdModal(true)} name={"Add"} variant={"solid"} />
-                <Button name={"Remove"} variant={"outlined"} />
+                {/* <Button name={"Remove"} variant={"outlined"} /> */}
             </div>
         </div>
     )
