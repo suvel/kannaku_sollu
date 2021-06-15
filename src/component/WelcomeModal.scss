@@ -1,0 +1,19 @@
+.welcome-modal__container {
+  width: 426px;
+  height: 356px;
+  background-color: #ffffff;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-size: 25px;
+
+  .welcome-modal__action {
+    margin-top: 3rem;
+    .btn {
+      &.solid {
+        color: white;
+        background-color: black;
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import Step4 from './Step4'
 import AddProductModal from './AddProductModal'
 import AddMemberModal from './AddMemberModal'
 import AddToBillModal from './AddToBillModal'
+import WelcomeModal from './WelcomeModal'
 import './MainApp.scss'
 import { Element, scroller } from 'react-scroll'
 
@@ -16,8 +17,8 @@ const MainApp = () => {
     const [showAddProdModal, setShowAddProdModal] = useState(false);
     const [showAddMemModal, setShowAddMemModal] = useState(false);
     const [showAddToBillModal, setShowAddToBillModal] = useState(false);
-
     const [showStep, setShowStep] = useState(1);
+    const [showWelcomeModal, setShowWelcomeModal] = useState(true);
 
 
 
@@ -91,21 +92,29 @@ const MainApp = () => {
     }
 
     return (
-        stepsObject?.map((step, index) => {
-            return (
-                <Element key={index} name={`step-${step.no}`}>
-                    <Step
-                        number={step.no}
-                        description={step.description}
-                        goToNxtStep={handelGoingNxtStep}
-                        show={step.show}
-                        currentStep={showStep}
-                    >
-                        {step.component}
-                    </Step>
-                </Element>
-            )
-        })
+        <>
+            {
+                stepsObject?.map((step, index) => {
+                    return (
+                        <Element key={index} name={`step-${step.no}`}>
+                            <Step
+                                number={step.no}
+                                description={step.description}
+                                goToNxtStep={handelGoingNxtStep}
+                                show={step.show}
+                                currentStep={showStep}
+                            >
+                                {step.component}
+                            </Step>
+                        </Element>
+                    )
+                })
+            }
+            <WelcomeModal
+                show={showWelcomeModal}
+                toggleShow={setShowWelcomeModal}
+            />
+        </>
     )
 }
 
