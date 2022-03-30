@@ -2,10 +2,18 @@ import React, { useContext } from "react";
 import "./Step1.scss";
 import Table from "./Table";
 import Button from "./Button";
-import { AppContext } from "../context/AppProvider";
+import { AppContext, reducerActTypes } from "../context/AppProvider";
 
 const Step1 = ({ toggleAddPrdModal }) => {
-  const { state } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
+
+  const removeProduct = (product) => {
+    const prdRowData = product.row.original;
+    const prodId = prdRowData.id;
+    const newProducts = state.products.filter((prd) => prd.id !== prodId);
+
+    dispatch({ type: reducerActTypes.SET_PRODUCT, value: newProducts });
+  };
 
   const columns = React.useMemo(
     () => [
@@ -20,6 +28,17 @@ const Step1 = ({ toggleAddPrdModal }) => {
       {
         Header: "PRICE",
         accessor: "prdPrice",
+      },
+      {
+        Header: "ACTION",
+        Cell: ({ cell }) => (
+          <button
+            value={cell.row.values.name}
+            onClick={() => removeProduct(cell)}
+          >
+            remove
+          </button>
+        ),
       },
     ],
     []
@@ -36,7 +55,6 @@ const Step1 = ({ toggleAddPrdModal }) => {
           name={"Add"}
           variant={"solid"}
         />
-        {/* <Button name={"Remove"} variant={"outlined"} /> */}
       </div>
     </div>
   );

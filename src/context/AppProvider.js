@@ -1,32 +1,37 @@
 import { createContext, useReducer } from "react";
+import generateArrProducts from "../functions/generateArrProducts";
+
+const sampleProducts = [
+  {
+    icon: "🍪",
+    prdName: "Butter Biscuit",
+    prdPrice: "10",
+  },
+  {
+    icon: "🍎",
+    prdName: "Apple",
+    prdPrice: "20",
+  },
+  {
+    icon: "🚬",
+    prdName: "Cigaret",
+    prdPrice: "18",
+  },
+  {
+    icon: "☕",
+    prdName: "Coffee",
+    prdPrice: "10",
+  },
+];
 
 const initialArg = {
-  products: [
-    {
-      icon: "🍪",
-      prdName: "Butter Biscuit",
-      prdPrice: "10",
-    },
-    {
-      icon: "🍎",
-      prdName: "Apple",
-      prdPrice: "20",
-    },
-    {
-      icon: "🚬",
-      prdName: "Cigaret",
-      prdPrice: "18",
-    },
-    {
-      icon: "☕",
-      prdName: "Coffee",
-      prdPrice: "10",
-    },
-  ],
+  products: generateArrProducts(sampleProducts),
   members: [
     {
       memName: "Mark Stain",
     },
+  ],
+  members: [
     {
       memName: "Drake Remorey",
     },
@@ -37,6 +42,8 @@ const initialArg = {
       prodExp: "2x🍎+3x🍪",
       total: 70,
     },
+  ],
+  shares: [
     {
       memName: "Drake Remorey",
       prodExp: "1x☕+2x🚬+1x🍪",
