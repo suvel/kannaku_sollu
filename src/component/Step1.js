@@ -3,6 +3,7 @@ import "./Step1.scss";
 import Table from "./Table";
 import Button from "./Button";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
+import RemoveBtn from "./RemoveBtn";
 
 const Step1 = ({ toggleAddPrdModal }) => {
   const { state, dispatch } = useContext(AppContext);
@@ -32,12 +33,9 @@ const Step1 = ({ toggleAddPrdModal }) => {
       {
         Header: "ACTION",
         Cell: ({ cell }) => (
-          <button
-            value={cell.row.values.name}
-            onClick={() => removeProduct(cell)}
-          >
-            remove
-          </button>
+          <RemoveBtn
+          onClick={() => removeProduct(cell)}
+          />
         ),
       },
     ],
