@@ -11,13 +11,15 @@ import Form, {
 import Button from "./Button";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
 import "./AddMemberModal.scss";
+import Member from "../entity/member";
 
 const AddMemberModal = ({ show, toggleShow }) => {
   const [memName, setMemName] = useState("");
   const { state, dispatch } = useContext(AppContext);
 
   const handelSubmit = () => {
-    const members = [...state.members, { memName }];
+    const newMember = new Member(memName);
+    const members = [...state.members, newMember.getMember()];
     dispatch({ type: reducerActTypes.SET_MEMBER, value: members });
     toggleShow(false);
     setMemName("");

@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import generateArrProducts from "../functions/generateArrProducts";
+import generateArrMembers from "../functions/generateArrMembers";
 
 const sampleProducts = [
   {
@@ -24,18 +25,15 @@ const sampleProducts = [
   },
 ];
 
+const sampleMembers = [
+  {
+    memName: "Drake Remorey",
+  },
+];
+
 const initialArg = {
   products: generateArrProducts(sampleProducts),
-  members: [
-    {
-      memName: "Mark Stain",
-    },
-  ],
-  members: [
-    {
-      memName: "Drake Remorey",
-    },
-  ],
+  members: generateArrMembers(sampleMembers),
   shares: [
     {
       memName: "Mark Stain",
