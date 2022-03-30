@@ -32,11 +32,7 @@ const Step1 = ({ toggleAddPrdModal }) => {
       },
       {
         Header: "ACTION",
-        Cell: ({ cell }) => (
-          <RemoveBtn
-          onClick={() => removeProduct(cell)}
-          />
-        ),
+        Cell: ({ cell }) => <RemoveBtn onClick={() => removeProduct(cell)} />,
       },
     ],
     []
