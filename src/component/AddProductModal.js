@@ -11,6 +11,7 @@ import Form, {
   FormInput,
 } from "./Form";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
+import Product from '../entity/product'
 
 const initFormData = {
   icon: "",
@@ -34,7 +35,12 @@ const AddProductModal = ({ show, toggleShow }) => {
   };
 
   const handelSubmit = () => {
-    const newProducts = [...state.products, formData];
+    const newProduct = new Product(
+      formData.prdName,
+      formData.icon,
+      formData.prdPric
+    );
+    const newProducts = [...state.products, newProduct.getProduct()];
     dispatch({ type: reducerActTypes.SET_PRODUCT, value: newProducts });
     closeModal();
   };

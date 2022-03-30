@@ -35,7 +35,7 @@ const Step1 = ({ toggleAddPrdModal }) => {
         Cell: ({ cell }) => <RemoveBtn onClick={() => removeProduct(cell)} />,
       },
     ],
-    []
+    [state.products]
   );
 
   const data = React.useMemo(() => state?.products || [], [state]);
