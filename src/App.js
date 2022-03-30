@@ -1,7 +1,7 @@
-import MainApp from './component/MainApp'
-import AppProvider from './context/AppProvider'
-import BrandLogo from './component/BrandLogo'
-import './App.scss';
+import MainApp from "./component/MainApp";
+import AppProvider from "./context/AppProvider";
+import BrandLogo from "./component/BrandLogo";
+import "./App.scss";
 
 function App() {
   return (

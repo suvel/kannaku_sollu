@@ -1,44 +1,43 @@
-import React, { useContext } from 'react'
-import './Step3.scss'
-import Table from './Table'
-import Button from './Button'
-import { AppContext } from '../context/AppProvider'
+import React, { useContext } from "react";
+import "./Step3.scss";
+import Table from "./Table";
+import Button from "./Button";
+import { AppContext } from "../context/AppProvider";
 
 const Step3 = ({ toggleAddToBillModal }) => {
+  const { state } = useContext(AppContext);
 
-    const { state } = useContext(AppContext);
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "MEMBER",
+        accessor: "memName",
+      },
+      {
+        Header: "PROD EXP",
+        accessor: "prodExp",
+      },
+      {
+        Header: "TOTAL",
+        accessor: "total",
+      },
+    ],
+    []
+  );
 
-    const columns = React.useMemo(
-        () => [
-            {
-                Header: 'MEMBER',
-                accessor: 'memName'
-            },
-            {
-                Header: 'PROD EXP',
-                accessor: 'prodExp'
-            },
-            {
-                Header: 'TOTAL',
-                accessor: 'total'
-            },
-        ],
-        []
-    )
+  return (
+    <div className="step3">
+      <Table columns={columns} data={state?.shares} />
+      <div className="step3__action">
+        <Button
+          onClick={() => toggleAddToBillModal(true)}
+          name={"Add"}
+          variant={"solid"}
+        />
+        {/* <Button name={"Remove"} variant={"outlined"} /> */}
+      </div>
+    </div>
+  );
+};
 
-    return (
-        <div className="step3">
-            <Table columns={columns} data={state?.shares} />
-            <div className='step3__action'>
-                <Button
-                    onClick={() => toggleAddToBillModal(true)}
-                    name={"Add"}
-                    variant={"solid"}
-                />
-                {/* <Button name={"Remove"} variant={"outlined"} /> */}
-            </div>
-        </div>
-    )
-}
-
-export default Step3
+export default Step3;
