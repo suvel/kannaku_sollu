@@ -27,6 +27,7 @@ const Step3 = ({ toggleAddToBillModal }) => {
 
   return (
     <div className="step3">
+      <Button name={"Refresh"} variant={"outlined"} />
       <Table columns={columns} data={state?.shares} />
       <div className="step3__action">
         <Button
