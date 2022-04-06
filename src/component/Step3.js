@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import "./Step3.scss";
 import Table from "./Table";
 import Button from "./Button";
+import RefreshButton from "./RefreshButton";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
 
 const Step3 = ({ toggleAddToBillModal }) => {
@@ -79,11 +80,7 @@ const Step3 = ({ toggleAddToBillModal }) => {
 
   return (
     <div className="step3">
-      <Button
-        name={"Refresh"}
-        variant={"outlined"}
-        onClick={handelBillingRefresh}
-      />
+      <RefreshButton onClick={handelBillingRefresh} />
       <Table columns={columns} data={state?.shares} />
       <div className="step3__action">
         <Button
