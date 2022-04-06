@@ -4,6 +4,7 @@ import Table from "./Table";
 import Button from "./Button";
 import RefreshButton from "./RefreshButton";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
+import calculateTotal from "../functions/calculateTotal";
 
 const Step3 = ({ toggleAddToBillModal }) => {
   const { state, dispatch } = useContext(AppContext);
@@ -25,19 +26,6 @@ const Step3 = ({ toggleAddToBillModal }) => {
     ],
     []
   );
-
-  const calculateTotal = (expStr, products) => {
-    const items = expStr.split("+");
-    let sum = 0;
-
-    items.forEach((item) => {
-      const [qty, prd] = item.split("x");
-      debugger;
-      const prdCost = products.find((product) => product.icon == prd).prdPrice;
-      sum = sum + qty * prdCost;
-    });
-    return sum;
-  };
 
   const handelBillingRefresh = () => {
     const curMembers = state.members;

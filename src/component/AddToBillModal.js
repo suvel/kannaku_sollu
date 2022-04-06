@@ -12,20 +12,7 @@ import Button from "./Button";
 import VariableExpressionInput from "./VariableExpressionInput";
 import { AppContext, reducerActTypes } from "../context/AppProvider";
 import "./AddToBillModal.scss";
-
-const calculateTotal = (expStr, products) => {
-  const items = expStr.split("+");
-  let sum = 0;
-
-  items.forEach((item) => {
-    const [qty, prd] = item.split("x");
-    debugger;
-    const prdCost = products.find((product) => product.icon == prd).prdPrice;
-    sum = sum + qty * prdCost;
-  });
-
-  return sum;
-};
+import calculateTotal from "../functions/calculateTotal";
 
 const AddToBillModal = ({ show, toggleShow }) => {
   const { state, dispatch } = useContext(AppContext);
