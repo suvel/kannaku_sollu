@@ -41,6 +41,7 @@ const AddToBillModal = ({ show, toggleShow }) => {
 
   const handelSubmit = () => {
     const newShareObj = {
+      memId:state.members[selectedIndex].id,
       memName: state.members[selectedIndex].memName,
       prodExp: prdExp,
       total: calculateTotal(prdExp, state.products),

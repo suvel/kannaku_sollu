@@ -35,18 +35,6 @@ const initialArg = {
   products: generateArrProducts(sampleProducts),
   members: generateArrMembers(sampleMembers),
   shares: [
-    {
-      memName: "Mark Stain",
-      prodExp: "2x🍎+3x🍪",
-      total: 70,
-    },
-  ],
-  shares: [
-    {
-      memName: "Drake Remorey",
-      prodExp: "1x☕+2x🚬+1x🍪",
-      total: 38,
-    },
   ],
   billName: "Untitled Bill",
 };
