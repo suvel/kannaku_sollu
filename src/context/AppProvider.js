@@ -46,7 +46,6 @@ const reducerActTypes = {
 };
 
 function reducer(state, action) {
-  debugger;
   switch (action.type) {
     case reducerActTypes.SET_PRODUCT:
       return { ...state, products: action.value };
