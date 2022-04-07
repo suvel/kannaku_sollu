@@ -1,6 +1,8 @@
 import { createContext, useReducer } from "react";
 import generateArrProducts from "../functions/generateArrProducts";
 import generateArrMembers from "../functions/generateArrMembers";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const sampleProducts = [
   {
@@ -34,8 +36,7 @@ const sampleMembers = [
 const initialArg = {
   products: generateArrProducts(sampleProducts),
   members: generateArrMembers(sampleMembers),
-  shares: [
-  ],
+  shares: [],
   billName: "Untitled Bill",
 };
 
@@ -63,9 +64,12 @@ const AppContext = createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialArg);
 
+  const notify = (msg) => toast(msg);
+
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ state, dispatch, notify }}>
       {children}
+      <ToastContainer />
     </AppContext.Provider>
   );
 };
