@@ -7,7 +7,7 @@ import { AppContext, reducerActTypes } from "../context/AppProvider";
 import calculateTotal from "../functions/calculateTotal";
 
 const Step3 = ({ toggleAddToBillModal }) => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch, notify } = useContext(AppContext);
 
   const columns = React.useMemo(
     () => [
@@ -27,20 +27,27 @@ const Step3 = ({ toggleAddToBillModal }) => {
     []
   );
 
+  const notifyRemovedMembers = (shares) => {
+    const removedMemberNames = shares.map((share) => share.memName);
+    removedMemberNames.forEach((name) => notify(`${name} removed`));
+  };
+
   const handelBillingRefresh = () => {
     const curMembers = state.members;
     const curProducts = state.products;
     const shares = state.shares;
 
     let newShares = [];
+    let removedShare = [];
+
+    const curMembersIds = curMembers.map((member) => member.id);
 
     //removing unavailable members
     shares.forEach((share) => {
-      const memberExist = curMembers.find((mem) => mem.id === share.memId);
-      if (memberExist) {
-        newShares.push({
-          ...share,
-        });
+      if (curMembersIds.includes(share.memId)) {
+        newShares.push(share);
+      } else {
+        removedShare.push(share);
       }
     });
 
@@ -62,6 +69,10 @@ const Step3 = ({ toggleAddToBillModal }) => {
       share.prodExp = newProdExp.join("+");
       share.total = calculateTotal(share.prodExp, curProducts);
     });
+
+    if (removedShare && removedShare.length > 0) {
+      notifyRemovedMembers(removedShare);
+    }
 
     dispatch({ type: reducerActTypes.SET_SHARE, value: newShares });
   };
