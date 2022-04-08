@@ -34,7 +34,7 @@ const generateBill = (billName, bills, products) => {
   const getProductDictionary = () => {
     let prdString = ``;
     products.forEach((prd) => {
-      prdString = prdString.concat(` \t[${prd.icon}]: ${prd.prdName}\n`);
+      prdString = prdString.concat(` \t[${prd.icon}]: ${prd.prdName} - ${prd.prdPrice}\n`);
     });
     return prdString;
   };
