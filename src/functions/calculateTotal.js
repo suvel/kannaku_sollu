@@ -29,11 +29,13 @@ products = [
 const calculateTotal = (expStr, products) => {
   const items = expStr.split("+");
   let sum = 0;
-
   items.forEach((item) => {
-    const [qty, prd] = item.split("x");
-    const prdCost = products.find((product) => product.icon == prd).prdPrice;
-    sum = sum + qty * prdCost;
+    if (item !== "") {
+      const [qty, prd] = item.split("x");
+      debugger;
+      const prdCost = products.find((product) => product.icon == prd).prdPrice;
+      sum = sum + qty * prdCost;
+    }
   });
   return sum;
 };
