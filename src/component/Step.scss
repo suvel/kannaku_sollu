@@ -95,6 +95,45 @@ $step4-color: #000000;
       }
     }
   }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "step__head"
+      "step__desc"
+      "step__main";
+
+    .step__desc {
+      font-size: 18px;
+      justify-content: start;
+      padding: 15px 20px 0;
+    }
+
+    .step__head {
+      grid-template-columns: 0.5fr 0.5fr 1fr;
+    }
+
+    .step__stringno {
+      font-size: 24px;
+    }
+
+    .step__bigno .step__no {
+      width: 56px;
+      font-size: 24px;
+    }
+
+    .step__main {
+      display: block;
+      padding: 20px 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .step__next-action {
+      bottom: 15px;
+      right: 15px;
+    }
+  }
 }
 
 .step {

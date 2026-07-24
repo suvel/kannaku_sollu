@@ -20,24 +20,26 @@ function Table({ columns, data, style }) {
   const rows = getDataUpdated(data);
 
   return (
-    <table style={style}>
-      <thead>
-        <tr>
-          {columns.map((column, index) => (
-            <th key={index}>{column.Header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, rowIndex) => (
-          <tr key={row.id ?? rowIndex}>
-            {columns.map((column, colIndex) => (
-              <td key={colIndex}>{renderCell(column, row)}</td>
+    <div className="table-wrapper">
+      <table style={style}>
+        <thead>
+          <tr>
+            {columns.map((column, index) => (
+              <th key={index}>{column.Header}</th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map((row, rowIndex) => (
+            <tr key={row.id ?? rowIndex}>
+              {columns.map((column, colIndex) => (
+                <td key={colIndex}>{renderCell(column, row)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

@@ -19,5 +19,14 @@ $step1-border: 2px solid $step1-color;
         border: $step1-border;
       }
     }
+
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+      justify-content: stretch;
+
+      .btn {
+        flex: 1 1 auto;
+      }
+    }
   }
 }

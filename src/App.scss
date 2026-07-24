@@ -17,4 +17,14 @@
   .mainbody {
     grid-area: mainbody;
   }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "header"
+      "mainbody";
+    min-height: 100vh;
+    height: auto;
+  }
 }

@@ -43,4 +43,21 @@
     justify-content: flex-end;
     gap: 10px;
   }
+
+  @media (max-width: 768px) {
+    padding: 15px;
+
+    .form__input-group .row {
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form__action {
+      flex-wrap: wrap;
+
+      .btn {
+        flex: 1 1 auto;
+      }
+    }
+  }
 }
