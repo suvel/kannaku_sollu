@@ -6,12 +6,10 @@
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "framer-motion": "^12.42.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
-    "sass": "^1.101.7",
-    "sonner": "^2.0.7",
     "web-vitals": "^6.0.0"
   },
   "scripts": {
@@ -39,7 +37,10 @@
     ]
   },
   "devDependencies": {
-    "prettier": "2.6.1"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "prettier": "2.6.1",
+    "tailwindcss": "^3.4.15"
   },
   "overrides": {
     "ajv-keywords@5.1.0": {

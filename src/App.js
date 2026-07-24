@@ -1,20 +1,19 @@
-import MainApp from "./component/MainApp";
-import AppProvider from "./context/AppProvider";
-import BrandLogo from "./component/BrandLogo";
-import "./App.scss";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import ProductsPage from "./pages/ProductsPage";
+import MembersPage from "./pages/MembersPage";
+import SplitPage from "./pages/SplitPage";
+import SummaryPage from "./pages/SummaryPage";
 
 function App() {
   return (
-    <div className="container">
-      <div className="header">
-        <BrandLogo />
-      </div>
-      <div className="mainbody">
-        <AppProvider>
-          <MainApp />
-        </AppProvider>
-      </div>
-    </div>
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<ProductsPage />} />
+        <Route path="/members" element={<MembersPage />} />
+        <Route path="/split" element={<SplitPage />} />
+        <Route path="/summary" element={<SummaryPage />} />
+      </Routes>
+    </HashRouter>
   );
 }
 

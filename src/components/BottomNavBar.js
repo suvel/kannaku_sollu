@@ -1,0 +1,43 @@
+import { Link, useLocation } from "react-router-dom";
+
+const TABS = [
+  { to: "/", icon: "inventory_2", label: "Products" },
+  { to: "/members", icon: "group", label: "Members" },
+  { to: "/split", icon: "rotate_90_degrees_ccw", label: "Split" },
+  { to: "/summary", icon: "receipt_long", label: "Summary" },
+];
+
+function BottomNavBar() {
+  const location = useLocation();
+
+  return (
+    <nav className="fixed bottom-0 left-0 w-full z-50 h-20 border-t border-outline-variant bg-background">
+      <div className="max-w-[768px] mx-auto flex justify-around items-center h-full px-container-margin pb-safe">
+        {TABS.map((tab) => {
+          const isActive = location.pathname === tab.to;
+          return (
+            <Link
+              key={tab.to}
+              to={tab.to}
+              className={`flex flex-col items-center justify-center ${
+                isActive
+                  ? "text-secondary bg-secondary-container/20 rounded-full px-4 py-1 scale-95 transition-transform duration-200"
+                  : "text-on-surface-variant px-4 py-1 hover:text-secondary transition-colors"
+              }`}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
+              >
+                {tab.icon}
+              </span>
+              <span className="font-label-bold text-label-bold">{tab.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+export default BottomNavBar;
