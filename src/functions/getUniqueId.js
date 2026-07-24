@@ -1,7 +1,5 @@
-import uniqid from "uniqid";
-
 const getUniquieId = () => {
-  return uniqid();
+  return crypto.randomUUID();
 };
 
 export default getUniquieId;

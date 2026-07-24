@@ -1,20 +1,24 @@
 import React from "react";
 import "./Modal.scss";
-import { animated, config, useTransition } from "react-spring";
+import { AnimatePresence, motion } from "framer-motion";
+
+const gentleTransition = { type: "spring", mass: 1, stiffness: 120, damping: 14 };
+
 const Modal = ({ children, show }) => {
-  const transitions = useTransition(show, {
-    from: { opacity: 0, transform: "scale(0) translate(-100%, -100%)" },
-    enter: { opacity: 1, transform: "scale(1) translate(-50%, -50%)" },
-    leave: { opacity: 0, transform: "scale(0) translate(-100%, -100%)" },
-    config: config.gentle,
-  });
-  return transitions(
-    (styles, item) =>
-      item && (
-        <animated.div style={styles} className={`modal__container`}>
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="modal__container"
+          initial={{ opacity: 0, scale: 0, x: "-100%", y: "-100%" }}
+          animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+          exit={{ opacity: 0, scale: 0, x: "-100%", y: "-100%" }}
+          transition={gentleTransition}
+        >
           {children}
-        </animated.div>
-      )
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

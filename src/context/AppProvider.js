@@ -1,8 +1,7 @@
 import { createContext, useReducer } from "react";
 import generateArrProducts from "../functions/generateArrProducts";
 import generateArrMembers from "../functions/generateArrMembers";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster, toast } from "sonner";
 
 const sampleProducts = [
   {
@@ -69,7 +68,7 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={{ state, dispatch, notify }}>
       {children}
-      <ToastContainer />
+      <Toaster />
     </AppContext.Provider>
   );
 };

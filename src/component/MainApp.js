@@ -9,7 +9,6 @@ import AddMemberModal from "./AddMemberModal";
 import AddToBillModal from "./AddToBillModal";
 import WelcomeModal from "./WelcomeModal";
 import "./MainApp.scss";
-import { Element, scroller } from "react-scroll";
 
 const MainApp = () => {
   const [showAddProdModal, setShowAddProdModal] = useState(false);
@@ -77,18 +76,16 @@ const MainApp = () => {
 
   const handelGoingNxtStep = (nxtStepNumber) => {
     setShowStep(nxtStepNumber);
-    scroller.scrollTo(`step-${nxtStepNumber}`, {
-      duration: 800,
-      delay: 0,
-      smooth: "easeInOutQuart",
-    });
+    document
+      .getElementById(`step-${nxtStepNumber}`)
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
       {stepsObject?.map((step, index) => {
         return (
-          <Element key={index} name={`step-${step.no}`}>
+          <div key={index} id={`step-${step.no}`}>
             <Step
               number={step.no}
               description={step.description}
@@ -98,7 +95,7 @@ const MainApp = () => {
             >
               {step.component}
             </Step>
-          </Element>
+          </div>
         );
       })}
       <WelcomeModal show={showWelcomeModal} toggleShow={setShowWelcomeModal} />

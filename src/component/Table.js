@@ -1,8 +1,14 @@
-import { useTable } from "react-table";
 import "./Table.scss";
 
 const getDataUpdated = (dataArr) => {
   return dataArr.map((data, index) => ({ ...data, sno: index + 1 }));
+};
+
+const renderCell = (column, row) => {
+  if (column.Cell) {
+    return column.Cell({ cell: { row: { original: row } } });
+  }
+  return row[column.accessor];
 };
 
 function Table({ columns, data, style }) {
@@ -11,34 +17,25 @@ function Table({ columns, data, style }) {
     accessor: "sno",
   });
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      columns: columns,
-      data: getDataUpdated(data),
-    });
+  const rows = getDataUpdated(data);
 
   return (
-    <table style={style} {...getTableProps()}>
+    <table style={style}>
       <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+        <tr>
+          {columns.map((column, index) => (
+            <th key={index}>{column.Header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, rowIndex) => (
+          <tr key={row.id ?? rowIndex}>
+            {columns.map((column, colIndex) => (
+              <td key={colIndex}>{renderCell(column, row)}</td>
             ))}
           </tr>
         ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => {
-                return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
-              })}
-            </tr>
-          );
-        })}
       </tbody>
     </table>
   );

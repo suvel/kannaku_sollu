@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-import { useSpring, animated } from "react-spring";
+import { motion } from "framer-motion";
 import "./Step.scss";
 
 const Step = ({
@@ -13,48 +13,41 @@ const Step = ({
 }) => {
   const showWhatNxtBtn = number < 4 && currentStep == number;
 
-  const slowL2RAnimationStyle = useSpring({
-    repeat: true,
-    cancel: currentStep < number,
-    to: [{ opacity: 1, transform: "translateX(0px)" }],
-    from: { opacity: 0, transform: "translateX(-500px)" },
-    delay: 500,
-  });
-
-  const fastL2RAnimationStyle = useSpring({
-    repeat: true,
-    cancel: currentStep < number,
-    to: [{ opacity: 1, transform: "translateX(0px)" }],
-    from: { opacity: 0, transform: "translateX(-500px)" },
-    delay: 250,
-  });
-
-  const fastT2BAnimationStyle = useSpring({
-    repeat: true,
-    cancel: currentStep < number,
-    to: [{ opacity: 1, transform: "translateY(0px)" }],
-    from: { opacity: 0, transform: "translateY(-500px)" },
-    delay: 250,
-  });
-
   return (
     show && (
       <div key={number} className={`step step${number}`}>
-        <animated.div style={slowL2RAnimationStyle} className="step__desc">
+        <motion.div
+          className="step__desc"
+          initial={{ opacity: 0, x: -500 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           {description}
-        </animated.div>
+        </motion.div>
         <div className="step__head">
-          <animated.div
-            style={fastL2RAnimationStyle}
+          <motion.div
             className="step__stringno"
+            initial={{ opacity: 0, x: -500 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.25 }}
           >
             {`Step ${number}`}
-          </animated.div>
-          <animated.div style={fastT2BAnimationStyle} className="step__bigno">
+          </motion.div>
+          <motion.div
+            className="step__bigno"
+            initial={{ opacity: 0, y: -500 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
             <div className="step__no">{number}</div>
-          </animated.div>
+          </motion.div>
         </div>
-        <animated.div style={fastT2BAnimationStyle} className="step__main">
+        <motion.div
+          className="step__main"
+          initial={{ opacity: 0, y: -500 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
           {children}
           <div className={`step__next-action show_${showWhatNxtBtn}`}>
             <Button
@@ -63,7 +56,7 @@ const Step = ({
               variant={"solid"}
             />
           </div>
-        </animated.div>
+        </motion.div>
       </div>
     )
   );
