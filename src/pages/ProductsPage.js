@@ -105,10 +105,9 @@ function ProductsPage() {
         <div className="mt-8">
           <button
             onClick={() => navigate("/members")}
-            className="w-full bg-primary text-on-primary rounded-xl py-4 font-label-bold text-lg uppercase shadow-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+            className="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40"
           >
-            Continue to Members
-            <span className="material-symbols-outlined">arrow_forward</span>
+            <span className="material-symbols-outlined text-2xl">arrow_forward</span>
           </button>
         </div>
       </main>
