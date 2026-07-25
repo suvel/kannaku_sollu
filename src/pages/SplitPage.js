@@ -5,6 +5,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
+import { formatQty, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
 
 function SplitPage() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function SplitPage() {
   const [quantity, setQuantity] = useState(1.5);
   const [activeMember, setActiveMember] = useState(members[0]?.id ?? "");
   const [selectedItem, setSelectedItem] = useState(products[0]?.id ?? "");
+  const [expandedGroups, setExpandedGroups] = useState({});
 
   const handleAssign = () => {
     const member = members.find((m) => m.id === activeMember);
@@ -25,7 +27,7 @@ function SplitPage() {
       productId: product.id,
       icon: product.emoji,
       name: product.name,
-      qty: `${quantity.toFixed(1)} @ ${member.name}`,
+      qty: quantity,
       price: `$${price.toFixed(2)}`,
     };
     addLedgerItem(newItem);
@@ -35,6 +37,22 @@ function SplitPage() {
     (sum, item) => sum + parseFloat(item.price.replace("$", "")),
     0
   );
+
+  const memberReceiptGroups = members
+    .map((member) => ({
+      key: member.id,
+      member,
+      items: getMemberLedgerItems(ledgerItems, member.id),
+    }))
+    .filter((group) => group.items.length > 0);
+
+  const orphanItems = ledgerItems.filter(
+    (item) => !members.some((m) => m.id === item.memberId)
+  );
+
+  const receiptGroups = orphanItems.length
+    ? [...memberReceiptGroups, { key: "unassigned", member: null, items: orphanItems }]
+    : memberReceiptGroups;
 
   return (
     <div className="min-h-screen pb-32 pt-20">
@@ -190,46 +208,82 @@ function SplitPage() {
                 </span>
                 <span className="font-data-mono text-xs text-secondary-fixed">2023.10.14</span>
               </div>
-              <div className="p-4 space-y-3">
-                {ledgerItems.map((item, idx) => {
-                  const memberMissing = !members.some((m) => m.id === item.memberId);
-                  const productMissing = !products.some((p) => p.id === item.productId);
-                  const isBroken = memberMissing || productMissing;
+              <div className="p-4 space-y-4">
+                {receiptGroups.map((group, groupIdx) => {
+                  const isExpanded = !!expandedGroups[group.key];
                   return (
-                    <div key={item.id}>
-                      <div
-                        className={`flex justify-between items-center group ${
-                          isBroken ? "bg-error/10 border border-error rounded-lg px-2 -mx-2 py-1" : ""
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl">{item.icon}</span>
-                          <div>
-                            <p className="font-label-bold text-on-surface uppercase">{item.name}</p>
-                            <p className="font-label-xs text-outline">Qty: {item.qty}</p>
-                            {isBroken && (
-                              <p className="font-label-xs text-error uppercase">
-                                {memberMissing && productMissing
-                                  ? "Member & item removed"
-                                  : memberMissing
-                                  ? "Member removed"
-                                  : "Item removed"}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-data-mono text-on-surface">{item.price}</p>
-                          <button
-                            onClick={() => removeLedgerItem(item.id)}
-                            className="text-error opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <span className="material-symbols-outlined text-sm">close</span>
-                          </button>
-                        </div>
-                      </div>
-                      {idx < ledgerItems.length - 1 && <div className="dashed-divider"></div>}
+                  <div key={group.key}>
+                    <div className="flex items-baseline justify-between">
+                      <span className="font-label-bold text-secondary uppercase text-xs">
+                        {group.member ? group.member.name : "Member Removed"}
+                      </span>
+                      {group.member && (
+                        <span className="font-data-mono text-[10px] text-outline">
+                          {getMemberExpression(ledgerItems, group.member.id)} · $
+                          {getMemberTotal(ledgerItems, group.member.id).toFixed(2)}
+                        </span>
+                      )}
                     </div>
+                    <div className="flex justify-end mb-2">
+                      <button
+                        onClick={() =>
+                          setExpandedGroups((prev) => ({ ...prev, [group.key]: !prev[group.key] }))
+                        }
+                        className="font-label-xs text-[9px] text-secondary uppercase flex items-center gap-0.5"
+                      >
+                        {isExpanded ? "Show less" : "Show more"}
+                        <span className="material-symbols-outlined text-xs">
+                          {isExpanded ? "expand_less" : "expand_more"}
+                        </span>
+                      </button>
+                    </div>
+                    {isExpanded && (
+                    <div className="space-y-3">
+                      {group.items.map((item, idx) => {
+                        const memberMissing = !group.member;
+                        const productMissing = !products.some((p) => p.id === item.productId);
+                        const isBroken = memberMissing || productMissing;
+                        return (
+                          <div key={item.id}>
+                            <div
+                              className={`flex justify-between items-center group ${
+                                isBroken ? "bg-error/10 border border-error rounded-lg px-2 -mx-2 py-1" : ""
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="text-xl">{item.icon}</span>
+                                <div>
+                                  <p className="font-label-bold text-on-surface uppercase">{item.name}</p>
+                                  <p className="font-label-xs text-outline">Qty: {formatQty(item.qty)}</p>
+                                  {isBroken && (
+                                    <p className="font-label-xs text-error uppercase">
+                                      {memberMissing && productMissing
+                                        ? "Member & item removed"
+                                        : memberMissing
+                                        ? "Member removed"
+                                        : "Item removed"}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-data-mono text-on-surface">{item.price}</p>
+                                <button
+                                  onClick={() => removeLedgerItem(item.id)}
+                                  className="text-error opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <span className="material-symbols-outlined text-sm">close</span>
+                                </button>
+                              </div>
+                            </div>
+                            {idx < group.items.length - 1 && <div className="dashed-divider"></div>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    )}
+                    {groupIdx < receiptGroups.length - 1 && <div className="dashed-divider mt-3"></div>}
+                  </div>
                   );
                 })}
               </div>
