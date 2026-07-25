@@ -3,18 +3,38 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import { useMembers } from "../context/MembersContext";
-
-const LEDGER_ITEMS = [
-  { icon: "🍔", name: "Artisan Burger", qty: "1.0 @ Amanda", price: "$24.00" },
-  { icon: "🍺", name: "Craft IPA", qty: "2.0 @ Jordan", price: "$18.00" },
-  { icon: "🥗", name: "Kale Salad", qty: "0.5 @ Taylor", price: "$11.50" },
-];
+import { useProducts } from "../context/ProductsContext";
+import { useLedger } from "../context/LedgerContext";
 
 function SplitPage() {
   const navigate = useNavigate();
   const { members } = useMembers();
+  const { products } = useProducts();
+  const { ledgerItems, addLedgerItem, removeLedgerItem } = useLedger();
   const [quantity, setQuantity] = useState(1.5);
-  const [activeMember, setActiveMember] = useState(members[0]?.name ?? "");
+  const [activeMember, setActiveMember] = useState(members[0]?.id ?? "");
+  const [selectedItem, setSelectedItem] = useState(products[0]?.id ?? "");
+
+  const handleAssign = () => {
+    const member = members.find((m) => m.id === activeMember);
+    const product = products.find((p) => p.id === selectedItem);
+    if (!member || !product) return;
+    const price = product.price * quantity;
+    const newItem = {
+      memberId: member.id,
+      productId: product.id,
+      icon: product.emoji,
+      name: product.name,
+      qty: `${quantity.toFixed(1)} @ ${member.name}`,
+      price: `$${price.toFixed(2)}`,
+    };
+    addLedgerItem(newItem);
+  };
+
+  const totalAssigned = ledgerItems.reduce(
+    (sum, item) => sum + parseFloat(item.price.replace("$", "")),
+    0
+  );
 
   return (
     <div className="min-h-screen pb-32 pt-20">
@@ -29,11 +49,11 @@ function SplitPage() {
           </div>
           <div className="flex gap-inline-gap overflow-x-auto hide-scrollbar py-2 -mx-container-margin px-container-margin">
             {members.map((member) => {
-              const isActive = activeMember === member.name;
+              const isActive = activeMember === member.id;
               return (
                 <div
                   key={member.id}
-                  onClick={() => setActiveMember(member.name)}
+                  onClick={() => setActiveMember(member.id)}
                   className={`flex-shrink-0 w-32 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
                     isActive
                       ? "bg-secondary-container/20 border-2 border-secondary shadow-sm"
@@ -89,11 +109,14 @@ function SplitPage() {
                   </label>
                   <select
                     value={activeMember}
-                    onChange={(e) => setActiveMember(e.target.value)}
+                    onChange={(e) => {
+                      const found = members.find((m) => String(m.id) === e.target.value);
+                      if (found) setActiveMember(found.id);
+                    }}
                     className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2"
                   >
                     {members.map((member) => (
-                      <option key={member.id} value={member.name}>
+                      <option key={member.id} value={member.id}>
                         {member.name}
                       </option>
                     ))}
@@ -103,10 +126,16 @@ function SplitPage() {
                   <label className="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-label-xs font-label-bold text-outline-variant uppercase">
                     Item
                   </label>
-                  <select className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2">
-                    <option value="burger">🍔 Artisan Burger</option>
-                    <option value="beer">🍺 Craft IPA</option>
-                    <option value="salad">🥗 Kale Salad</option>
+                  <select
+                    value={selectedItem}
+                    onChange={(e) => setSelectedItem(Number(e.target.value))}
+                    className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2"
+                  >
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.emoji} {product.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -129,7 +158,10 @@ function SplitPage() {
                     add_circle
                   </button>
                 </div>
-                <button className="bg-primary text-on-primary font-label-bold h-12 px-6 rounded-xl flex items-center gap-2 hover:bg-on-background transition-colors active:scale-95">
+                <button
+                  onClick={handleAssign}
+                  className="bg-primary text-on-primary font-label-bold h-12 px-6 rounded-xl flex items-center gap-2 hover:bg-on-background transition-colors active:scale-95"
+                >
                   <span className="material-symbols-outlined text-sm">add</span>
                   ASSIGN
                 </button>
@@ -159,26 +191,47 @@ function SplitPage() {
                 <span className="font-data-mono text-xs text-secondary-fixed">2023.10.14</span>
               </div>
               <div className="p-4 space-y-3">
-                {LEDGER_ITEMS.map((item, idx) => (
-                  <div key={item.name}>
-                    <div className="flex justify-between items-center group">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl">{item.icon}</span>
-                        <div>
-                          <p className="font-label-bold text-on-surface uppercase">{item.name}</p>
-                          <p className="font-label-xs text-outline">Qty: {item.qty}</p>
+                {ledgerItems.map((item, idx) => {
+                  const memberMissing = !members.some((m) => m.id === item.memberId);
+                  const productMissing = !products.some((p) => p.id === item.productId);
+                  const isBroken = memberMissing || productMissing;
+                  return (
+                    <div key={item.id}>
+                      <div
+                        className={`flex justify-between items-center group ${
+                          isBroken ? "bg-error/10 border border-error rounded-lg px-2 -mx-2 py-1" : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl">{item.icon}</span>
+                          <div>
+                            <p className="font-label-bold text-on-surface uppercase">{item.name}</p>
+                            <p className="font-label-xs text-outline">Qty: {item.qty}</p>
+                            {isBroken && (
+                              <p className="font-label-xs text-error uppercase">
+                                {memberMissing && productMissing
+                                  ? "Member & item removed"
+                                  : memberMissing
+                                  ? "Member removed"
+                                  : "Item removed"}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-data-mono text-on-surface">{item.price}</p>
+                          <button
+                            onClick={() => removeLedgerItem(item.id)}
+                            className="text-error opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <span className="material-symbols-outlined text-sm">close</span>
+                          </button>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-data-mono text-on-surface">{item.price}</p>
-                        <button className="text-error opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="material-symbols-outlined text-sm">close</span>
-                        </button>
-                      </div>
+                      {idx < ledgerItems.length - 1 && <div className="dashed-divider"></div>}
                     </div>
-                    {idx < LEDGER_ITEMS.length - 1 && <div className="dashed-divider"></div>}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="bg-surface-container-low p-4 notch-footer">
                 <div className="flex justify-between items-center">
@@ -186,7 +239,7 @@ function SplitPage() {
                     Total Assigned
                   </span>
                   <span className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded">
-                    $53.50
+                    ${totalAssigned.toFixed(2)}
                   </span>
                 </div>
               </div>
