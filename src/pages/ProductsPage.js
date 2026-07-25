@@ -23,12 +23,6 @@ function ProductsPage() {
             </p>
             <h1 className="font-headline-lg text-headline-lg">Inventory List</h1>
           </div>
-          <div className="text-right">
-            <p className="font-label-xs text-label-xs text-on-surface-variant uppercase">
-              Current Session
-            </p>
-            <p className="font-data-mono text-data-mono">#ORD-2024-X9</p>
-          </div>
         </section>
 
         <div className="grid grid-cols-2 gap-inline-gap">
