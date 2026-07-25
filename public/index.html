@@ -2,14 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/logo.png" />
+    <link rel="icon" href="%PUBLIC_URL%/kannaku_sollu_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      #splash-screen {
+        position: fixed;
+        inset: 0;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      #splash-screen img {
+        max-width: 80%;
+        max-height: 80%;
+      }
+    </style>
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Precision Ledger — split bills and expenses among friends"
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/kannaku_sollu_logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -28,6 +51,9 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="splash-screen">
+      <img src="%PUBLIC_URL%/kannaku_sollu_splash_screen.png" alt="" />
+    </div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
