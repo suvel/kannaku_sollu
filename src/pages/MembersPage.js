@@ -2,25 +2,38 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
+import AddMemberModal from "../components/AddMemberModal";
 
 function MembersPage() {
   const navigate = useNavigate();
+  const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [members, setMembers] = useState([
-    { id: "self", name: "John Doe (You)", role: "OWNER", avatar: null, initial: "JD" },
+    { id: "self", name: "John Doe (You)", avatar: null, initial: "JD" },
     {
       id: "sarah",
       name: "Sarah Miller",
-      role: "MEMBER",
       avatar:
         "https://lh3.googleusercontent.com/aida-public/AB6AXuDaHI0U_Jf-y2UwVHlBZttJBOK5uFz4FpyZUtgwEibPcH2kcEfb269BCsgQVpJGRK-y7zAm7j_2nG__AOBCKuoaIQTUFaaVjQqr9At9p8ov_6cCUcytpVJNg1FYFbqoir2IgN7rFfbeRRmDYkR1bvLVmzM7ReIfQBwQvrAROzRKUCcMI40D2tVsFRZoCfP3mwTN7jrEBDXIXaR-Nptq4FyHHjB9zJ1WjZOTQqFIJpQqMDKy6SNXkwNxInf-cpMAZN8BMy6GsoPYU1pf",
       initial: "SM",
     },
-    { id: "marcus", name: "Marcus Wong", role: "MEMBER", avatar: null, initial: "MW" },
+    { id: "marcus", name: "Marcus Wong", avatar: null, initial: "MW" },
   ]);
 
   const removeMember = (id) => {
     if (id === "self") return;
     setMembers(members.filter((m) => m.id !== id));
+  };
+
+  const addMember = ({ name }) => {
+    const initial = name
+      .trim()
+      .split(/\s+/)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+    setMembers([...members, { id: Date.now(), name, avatar: null, initial }]);
+    setIsAddMemberOpen(false);
   };
 
   return (
@@ -61,9 +74,6 @@ function MembersPage() {
               <p className="font-label-bold text-label-bold text-primary mb-1 text-center">
                 {member.name}
               </p>
-              <p className="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-widest">
-                {member.role}
-              </p>
               <div className="mt-4 pt-3 border-t border-dashed border-outline-variant w-full text-center">
                 <button
                   onClick={() => removeMember(member.id)}
@@ -79,7 +89,10 @@ function MembersPage() {
               </div>
             </div>
           ))}
-          <button className="dashed-border bg-transparent p-card-padding flex flex-col items-center justify-center group hover:bg-secondary-container/10 transition-colors">
+          <button
+            onClick={() => setIsAddMemberOpen(true)}
+            className="dashed-border bg-transparent p-card-padding flex flex-col items-center group hover:bg-secondary-container/10 transition-colors justify-center"
+          >
             <div className="w-12 h-12 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center mb-3 group-hover:border-secondary group-hover:text-secondary text-outline-variant transition-colors">
               <span className="material-symbols-outlined text-2xl">person_add</span>
             </div>
@@ -108,6 +121,11 @@ function MembersPage() {
       >
         <span className="material-symbols-outlined text-2xl">arrow_forward</span>
       </button>
+      <AddMemberModal
+        open={isAddMemberOpen}
+        onClose={() => setIsAddMemberOpen(false)}
+        onAdd={addMember}
+      />
       <BottomNavBar />
     </div>
   );
