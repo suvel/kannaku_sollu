@@ -1,13 +1,22 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import { useMembers } from "../context/MembersContext";
 import { useLedger } from "../context/LedgerContext";
-import { getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
+import {
+  buildWhatsAppSummary,
+  getGrandTotal,
+  getItemLegend,
+  getMemberExpression,
+  getMemberLedgerItems,
+  getMemberTotal,
+} from "../utils/ledgerSummary";
 
 function SummaryPage() {
   const { members } = useMembers();
   const { ledgerItems } = useLedger();
+  const [copied, setCopied] = useState(false);
 
   const finalTotals = members
     .filter((member) => getMemberLedgerItems(ledgerItems, member.id).length > 0)
@@ -18,9 +27,24 @@ function SummaryPage() {
       amount: `$${getMemberTotal(ledgerItems, member.id).toFixed(2)}`,
     }));
 
+  const itemLegend = getItemLegend(ledgerItems);
+  const grandTotal = `$${getGrandTotal(ledgerItems).toFixed(2)}`;
+  const shareText = buildWhatsAppSummary(members, ledgerItems);
+  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable/denied — no fallback UI, WhatsApp button still works independently
+    }
+  };
+
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar total="$128.45" />
+      <TopAppBar total={grandTotal} />
       <main className="px-container-margin max-w-[768px] mx-auto py-10 text-center">
         <span
           className="material-symbols-outlined text-6xl text-secondary mb-4"
@@ -48,6 +72,47 @@ function SummaryPage() {
               </div>
             ))}
           </div>
+
+          {itemLegend.length > 0 && (
+            <div className="mt-6 pt-4 border-t border-outline-variant">
+              <h4 className="font-label-xs uppercase text-outline mb-2">Item Legend</h4>
+              <div className="space-y-1">
+                {itemLegend.map((item) => (
+                  <div
+                    key={item.icon + item.name}
+                    className="flex justify-between font-label-xs text-outline"
+                  >
+                    <span>
+                      {item.icon} {item.name}
+                    </span>
+                    <span>{item.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-3 justify-center mb-8">
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="bg-primary text-on-primary font-label-bold h-12 px-6 rounded-xl flex items-center gap-2 hover:bg-on-background transition-colors active:scale-95"
+          >
+            <span className="material-symbols-outlined">
+              {copied ? "check" : "content_copy"}
+            </span>
+            {copied ? "Copied!" : "Copy"}
+          </button>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary text-on-primary font-label-bold h-12 px-6 rounded-xl flex items-center gap-2 hover:bg-on-background transition-colors active:scale-95"
+          >
+            <span className="material-symbols-outlined">share</span>
+            WhatsApp
+          </a>
         </div>
 
         <Link

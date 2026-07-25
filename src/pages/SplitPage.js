@@ -217,6 +217,8 @@ function SplitPage() {
                       <span className="font-label-bold text-secondary uppercase text-xs">
                         {group.member ? group.member.name : "Member Removed"}
                       </span>
+                      </div>
+                      <div>
                       {group.member && (
                         <span className="font-data-mono text-[10px] text-outline">
                           {getMemberExpression(ledgerItems, group.member.id)} · $
