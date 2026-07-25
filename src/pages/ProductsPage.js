@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
+import AddItemModal from "../components/AddItemModal";
 
 function ProductsPage() {
   const navigate = useNavigate();
@@ -12,9 +13,15 @@ function ProductsPage() {
     { id: 4, emoji: "🥗", name: "Greek Salad", price: 12.5 },
     { id: 5, emoji: "🍷", name: "House Wine", price: 32.0 },
   ]);
+  const [isAddItemOpen, setIsAddItemOpen] = useState(false);
 
   const removeProduct = (id) => {
     setProducts(products.filter((p) => p.id !== id));
+  };
+
+  const addProduct = ({ emoji, name, price }) => {
+    setProducts([...products, { id: Date.now(), emoji, name, price }]);
+    setIsAddItemOpen(false);
   };
 
   const subtotal = products.reduce((acc, p) => acc + p.price, 0);
@@ -67,7 +74,10 @@ function ProductsPage() {
               </button>
             </div>
           ))}
-          <button className="border-2 border-dashed border-outline-variant rounded-xl p-card-padding flex flex-col items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-all group min-h-[160px]">
+          <button
+            onClick={() => setIsAddItemOpen(true)}
+            className="border-2 border-dashed border-outline-variant rounded-xl p-card-padding flex flex-col items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-all group min-h-[160px]"
+          >
             <span className="material-symbols-outlined text-3xl mb-2 group-hover:scale-110 transition-transform">
               add_circle
             </span>
@@ -116,6 +126,11 @@ function ProductsPage() {
           </button>
         </div>
       </main>
+      <AddItemModal
+        open={isAddItemOpen}
+        onClose={() => setIsAddItemOpen(false)}
+        onAdd={addProduct}
+      />
       <BottomNavBar />
     </div>
   );
