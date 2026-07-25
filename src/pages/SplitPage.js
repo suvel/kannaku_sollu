@@ -28,13 +28,13 @@ function SplitPage() {
       icon: product.emoji,
       name: product.name,
       qty: quantity,
-      price: `$${price.toFixed(2)}`,
+      price: `₹${price.toFixed(2)}`,
     };
     addLedgerItem(newItem);
   };
 
   const totalAssigned = ledgerItems.reduce(
-    (sum, item) => sum + parseFloat(item.price.replace("$", "")),
+    (sum, item) => sum + parseFloat(item.price.replace("₹", "")),
     0
   );
 
@@ -56,7 +56,7 @@ function SplitPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar total="$248.50" />
+      <TopAppBar total="₹248.50" />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mt-4 mb-section-margin">
           <div className="flex items-baseline justify-between mb-2">
@@ -105,7 +105,7 @@ function SplitPage() {
                       isActive ? "text-on-secondary-container" : "text-outline"
                     }`}
                   >
-                    $0.00
+                    ₹0.00
                   </span>
                 </div>
               );
@@ -197,17 +197,12 @@ function SplitPage() {
               <span className="font-label-xs font-label-bold text-outline uppercase">
                 Unassigned:
               </span>
-              <span className="font-data-mono text-error">$142.00</span>
+              <span className="font-data-mono text-error">₹142.00</span>
             </div>
           </div>
           <div className="space-y-4">
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
-              <div className="bg-secondary px-4 py-2 flex justify-between items-center">
-                <span className="font-label-bold text-on-primary uppercase text-[10px] tracking-widest">
-                  Receipt #0412
-                </span>
-                <span className="font-data-mono text-xs text-secondary-fixed">2023.10.14</span>
-              </div>
+              <div className="bg-secondary px-4 py-2 flex justify-between items-center"/>
               <div className="p-4 space-y-4">
                 {receiptGroups.map((group, groupIdx) => {
                   const isExpanded = !!expandedGroups[group.key];
@@ -221,7 +216,7 @@ function SplitPage() {
                       <div>
                       {group.member && (
                         <span className="font-data-mono text-[10px] text-outline">
-                          {getMemberExpression(ledgerItems, group.member.id)} · $
+                          {getMemberExpression(ledgerItems, group.member.id)} · ₹
                           {getMemberTotal(ledgerItems, group.member.id).toFixed(2)}
                         </span>
                       )}
@@ -295,7 +290,7 @@ function SplitPage() {
                     Total Assigned
                   </span>
                   <span className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded">
-                    ${totalAssigned.toFixed(2)}
+                    ₹{totalAssigned.toFixed(2)}
                   </span>
                 </div>
               </div>

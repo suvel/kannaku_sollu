@@ -17,7 +17,7 @@ function MembersPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-24">
-      <TopAppBar total="$0.00" />
+      <TopAppBar total="₹0.00" />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <div className="mb-section-margin">
           <div>

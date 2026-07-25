@@ -3,9 +3,9 @@ import { createContext, useContext, useState } from "react";
 const LedgerContext = createContext(null);
 
 const INITIAL_LEDGER_ITEMS = [
-  { id: 1, memberId: "sarah", productId: 1, icon: "🍔", name: "Double Burger", qty: 1, price: "$14.50" },
-  { id: 2, memberId: "marcus", productId: 2, icon: "🍟", name: "Truffle Fries", qty: 2, price: "$16.50" },
-  { id: 3, memberId: "self", productId: 4, icon: "🥗", name: "Greek Salad", qty: 0.5, price: "$6.25" },
+  { id: 1, memberId: "sarah", productId: 1, icon: "🍔", name: "Double Burger", qty: 1, price: "₹14.50" },
+  { id: 2, memberId: "marcus", productId: 2, icon: "🍟", name: "Truffle Fries", qty: 2, price: "₹16.50" },
+  { id: 3, memberId: "self", productId: 4, icon: "🥗", name: "Greek Salad", qty: 0.5, price: "₹6.25" },
 ];
 
 export function LedgerProvider({ children }) {
@@ -22,10 +22,10 @@ export function LedgerProvider({ children }) {
       const existing = prev[idx];
       const mergedQty = existing.qty + item.qty;
       const mergedPrice =
-        parseFloat(String(existing.price).replace("$", "")) +
-        parseFloat(String(item.price).replace("$", ""));
+        parseFloat(String(existing.price).replace("₹", "")) +
+        parseFloat(String(item.price).replace("₹", ""));
       const next = [...prev];
-      next[idx] = { ...existing, qty: mergedQty, price: `$${mergedPrice.toFixed(2)}` };
+      next[idx] = { ...existing, qty: mergedQty, price: `₹${mergedPrice.toFixed(2)}` };
       return next;
     });
   };

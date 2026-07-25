@@ -24,11 +24,11 @@ function SummaryPage() {
       id: member.id,
       name: member.name,
       expression: getMemberExpression(ledgerItems, member.id),
-      amount: `$${getMemberTotal(ledgerItems, member.id).toFixed(2)}`,
+      amount: `₹${getMemberTotal(ledgerItems, member.id).toFixed(2)}`,
     }));
 
   const itemLegend = getItemLegend(ledgerItems);
-  const grandTotal = `$${getGrandTotal(ledgerItems).toFixed(2)}`;
+  const grandTotal = `₹${getGrandTotal(ledgerItems).toFixed(2)}`;
   const shareText = buildWhatsAppSummary(members, ledgerItems);
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 

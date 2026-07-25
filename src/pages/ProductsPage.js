@@ -43,7 +43,7 @@ function ProductsPage() {
                   {product.name}
                 </p>
                 <p className="font-data-mono text-data-mono text-secondary mb-3">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </p>
               </div>
               <button
@@ -74,25 +74,25 @@ function ProductsPage() {
               <span className="font-body-md text-body-md text-on-surface-variant">
                 Subtotal ({products.length} items)
               </span>
-              <span className="font-data-mono text-data-mono">${subtotal.toFixed(2)}</span>
+              <span className="font-data-mono text-data-mono">₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="dashed-divider"></div>
             <div className="flex justify-between items-center">
               <span className="font-body-md text-body-md text-on-surface-variant">
                 Service Fee (10%)
               </span>
-              <span className="font-data-mono text-data-mono">$9.12</span>
+              <span className="font-data-mono text-data-mono">₹9.12</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="font-body-md text-body-md text-on-surface-variant">
                 Tax (VAT 21%)
               </span>
-              <span className="font-data-mono text-data-mono">$28.08</span>
+              <span className="font-data-mono text-data-mono">₹28.08</span>
             </div>
           </div>
           <div className="bg-secondary-container/30 px-card-padding py-4 receipt-notched flex justify-between items-center">
             <span className="font-headline-md text-headline-md text-primary">TOTAL</span>
-            <span className="font-headline-md text-headline-md text-secondary">$128.45</span>
+            <span className="font-headline-md text-headline-md text-secondary">₹128.45</span>
           </div>
         </section>
 
