@@ -2,33 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
-
-const MEMBERS = [
-  {
-    id: "amanda",
-    name: "AMANDA",
-    amount: "$0.00",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuADobcrp_ddKDmQz_r3_elEoya4SqZP0gsA-VZf_rYLNN9716MNpe_z_XksF8ze_Y-jjpM86y2ijGnHVMuZ9wvlBX31uZT2iynrAltpPnxFAGGrJd9s-k--vPP8WZFoLteaFFUpjaZngcFkD2x1nxuf5_5UDFgocAY9gHoGtBasGFCT1VIu56eH8hPImnRgJ6gkG5qigAkBRyjMSKW5mUUV56oD1yOpXheL6AHV4SJJk1H_au5gmZDOQbjDADAAMjZazn54C9RZxgeJ",
-  },
-  {
-    id: "jordan",
-    name: "JORDAN",
-    amount: "$0.00",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCSa_rsDxWJ147oFcSG4SXniDmtItxbeCtCpd1T-c4WEkluQWpIH1vaIaFRkuIMmdF1dNvckCr9CO2wBkQ0lGhbmYmnaX0Ym9c4HCDh0TMnaZNxiCppX-JI0W3iHjlEPC0p8LUGkJMTeYhurY6sUnCJ4ffHyyNjIXeelVqC4fs3auYcSfqN_k2IvIGxMXAsXCe8J5k7wfvmRbPvIsBr-Mh-i0MdWK9kvBlbsFx7HCi4k1NYZk14fhd1GzX2LUqklfq9HZkAwFLg8Rqp",
-  },
-  {
-    id: "sarah",
-    name: "SARAH",
-    amount: "$0.00",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ141LRqxMFn6HyIjRApvjA1pgrIvdbjCpADkyuI-NxW7kcu7XgwV1VhGaKCxg-wM4n5lVjIqRz3Fxp-6uHXGE_OZYj3rKv60qo2xRB1PBE5RSQYmXI723z55FP8oI-aNgjcYzxxCmt1vw_peo4DkZMNQDJ1D1OxpvUUEHve6GMH1u9uQntW1aE4aDy3kJYgkTnxqZVo2XQD8XCIiIOqkiLUzAx7sonpfVBFLdXCRMZKxkTn6iH0esXjFOaMvu6zvCzYBk8TNXDbpx",
-  },
-  {
-    id: "taylor",
-    name: "TAYLOR",
-    amount: "$0.00",
-    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAp0oVdNsmKEcbhQppwCAvJTKSo_YGuHlBEvHNC7-T3T0KFMWwrpn5oQTJ0jz5o0MdpX-MGVYWKNJcTUO_atpFjwiEKRj1Vnn9h7RQITrkmDahKoQiznq9AfXOQOxtbFTQPPwA6wx9gEL9NFb47FMlW3NPZAZKwG6EOhasc1uxKqXafzOnGz6T7wXqkvZZFasflEYyJXl_j-6ddDdU-nfG0pz7ieC9ZY6AxwaM0P3JSK21d7O5JDlIy4xPVZKYHhLaNq9cVH5a73oHn",
-  },
-];
+import { useMembers } from "../context/MembersContext";
 
 const LEDGER_ITEMS = [
   { icon: "🍔", name: "Artisan Burger", qty: "1.0 @ Amanda", price: "$24.00" },
@@ -38,8 +12,9 @@ const LEDGER_ITEMS = [
 
 function SplitPage() {
   const navigate = useNavigate();
+  const { members } = useMembers();
   const [quantity, setQuantity] = useState(1.5);
-  const [activeMember, setActiveMember] = useState("AMANDA");
+  const [activeMember, setActiveMember] = useState(members[0]?.name ?? "");
 
   return (
     <div className="min-h-screen pb-32 pt-20">
@@ -50,16 +25,16 @@ function SplitPage() {
             <h2 className="font-label-bold text-label-bold uppercase text-on-surface-variant">
               Active Members
             </h2>
-            <span className="font-data-mono text-xs text-secondary">6 Selected</span>
+            <span className="font-data-mono text-xs text-secondary">{members.length} Selected</span>
           </div>
           <div className="flex gap-inline-gap overflow-x-auto hide-scrollbar py-2 -mx-container-margin px-container-margin">
-            {MEMBERS.map((member) => {
+            {members.map((member) => {
               const isActive = activeMember === member.name;
               return (
                 <div
                   key={member.id}
                   onClick={() => setActiveMember(member.name)}
-                  className={`flex-shrink-0 w-28 p-3 rounded-xl flex flex-col items-center gap-2 transition-all cursor-pointer ${
+                  className={`flex-shrink-0 w-32 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-all cursor-pointer ${
                     isActive
                       ? "bg-secondary-container/20 border-2 border-secondary shadow-sm"
                       : "bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low"
@@ -68,9 +43,17 @@ function SplitPage() {
                   <div
                     className={`w-12 h-12 rounded-full overflow-hidden border ${
                       isActive ? "border-secondary" : "border-outline-variant"
-                    } bg-surface-container-highest`}
+                    } ${
+                      member.avatar
+                        ? "bg-surface-container-highest"
+                        : "bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-label-bold"
+                    }`}
                   >
-                    <img className="w-full h-full object-cover" src={member.img} alt={member.name} />
+                    {member.avatar ? (
+                      <img className="w-full h-full object-cover" src={member.avatar} alt={member.name} />
+                    ) : (
+                      member.initial
+                    )}
                   </div>
                   <span
                     className={`font-label-bold text-label-bold ${
@@ -84,7 +67,7 @@ function SplitPage() {
                       isActive ? "text-on-secondary-container" : "text-outline"
                     }`}
                   >
-                    {member.amount}
+                    $0.00
                   </span>
                 </div>
               );
@@ -104,9 +87,16 @@ function SplitPage() {
                   <label className="absolute -top-2 left-2 px-1 bg-surface-container-lowest text-label-xs font-label-bold text-outline-variant uppercase">
                     Member
                   </label>
-                  <select className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2">
-                    <option>{activeMember.charAt(0) + activeMember.slice(1).toLowerCase()}</option>
-                    <option>Jordan</option>
+                  <select
+                    value={activeMember}
+                    onChange={(e) => setActiveMember(e.target.value)}
+                    className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2"
+                  >
+                    {members.map((member) => (
+                      <option key={member.id} value={member.name}>
+                        {member.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-2 relative flex items-center">

@@ -3,36 +3,15 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import AddMemberModal from "../components/AddMemberModal";
+import { useMembers } from "../context/MembersContext";
 
 function MembersPage() {
   const navigate = useNavigate();
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
-  const [members, setMembers] = useState([
-    { id: "self", name: "John Doe (You)", avatar: null, initial: "JD" },
-    {
-      id: "sarah",
-      name: "Sarah Miller",
-      avatar:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDaHI0U_Jf-y2UwVHlBZttJBOK5uFz4FpyZUtgwEibPcH2kcEfb269BCsgQVpJGRK-y7zAm7j_2nG__AOBCKuoaIQTUFaaVjQqr9At9p8ov_6cCUcytpVJNg1FYFbqoir2IgN7rFfbeRRmDYkR1bvLVmzM7ReIfQBwQvrAROzRKUCcMI40D2tVsFRZoCfP3mwTN7jrEBDXIXaR-Nptq4FyHHjB9zJ1WjZOTQqFIJpQqMDKy6SNXkwNxInf-cpMAZN8BMy6GsoPYU1pf",
-      initial: "SM",
-    },
-    { id: "marcus", name: "Marcus Wong", avatar: null, initial: "MW" },
-  ]);
-
-  const removeMember = (id) => {
-    if (id === "self") return;
-    setMembers(members.filter((m) => m.id !== id));
-  };
+  const { members, addMember: addMemberToContext, removeMember } = useMembers();
 
   const addMember = ({ name }) => {
-    const initial = name
-      .trim()
-      .split(/\s+/)
-      .map((part) => part[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase();
-    setMembers([...members, { id: Date.now(), name, avatar: null, initial }]);
+    addMemberToContext({ name });
     setIsAddMemberOpen(false);
   };
 
