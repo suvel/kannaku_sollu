@@ -20,11 +20,11 @@ function MembersPage() {
       <TopAppBar total="$0.00" />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <div className="mb-section-margin">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="bg-secondary-container text-on-secondary-container font-label-bold text-label-bold px-2 py-0.5 rounded-sm">
-              STEP 2
-            </span>
-            <h2 className="font-headline-md text-headline-md">Manage Members</h2>
+          <div>
+            <p className="font-label-bold text-label-bold text-secondary uppercase tracking-widest">
+              Step 02
+            </p>
+            <h1 className="font-headline-lg text-headline-lg">Manage Members</h1>
           </div>
           <p className="text-on-surface-variant font-body-md">
             Add the participants who will be splitting the ledger costs.
@@ -38,11 +38,10 @@ function MembersPage() {
               className="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center relative shadow-sm"
             >
               <div
-                className={`w-12 h-12 rounded-full ${
-                  member.avatar
+                className={`w-12 h-12 rounded-full ${member.avatar
                     ? "bg-surface-container-highest overflow-hidden"
                     : "bg-secondary-fixed text-on-secondary-fixed"
-                } flex items-center justify-center font-headline-md mb-3`}
+                  } flex items-center justify-center font-headline-md mb-3`}
               >
                 {member.avatar ? (
                   <img className="w-full h-full object-cover" src={member.avatar} alt={member.name} />
@@ -56,11 +55,10 @@ function MembersPage() {
               <div className="mt-4 pt-3 border-t border-dashed border-outline-variant w-full text-center">
                 <button
                   onClick={() => removeMember(member.id)}
-                  className={`font-label-bold text-label-bold ${
-                    member.id === "self"
+                  className={`font-label-bold text-label-bold ${member.id === "self"
                       ? "text-on-surface-variant opacity-30 cursor-not-allowed"
                       : "text-error hover:underline transition-all"
-                  }`}
+                    }`}
                   disabled={member.id === "self"}
                 >
                   REMOVE
@@ -79,19 +77,6 @@ function MembersPage() {
               ADD MEMBER
             </p>
           </button>
-        </div>
-
-        <div className="bg-surface-container-low rounded-xl p-card-padding border border-outline-variant border-dashed">
-          <div className="flex items-start gap-3">
-            <span className="material-symbols-outlined text-secondary">info</span>
-            <div>
-              <h4 className="font-label-bold text-label-bold text-primary mb-1">SYSTEM NOTE</h4>
-              <p className="text-body-md text-on-surface-variant">
-                Adding members allows you to assign specific line items to individuals or groups
-                during the 'Split' phase.
-              </p>
-            </div>
-          </div>
         </div>
       </main>
       <button
