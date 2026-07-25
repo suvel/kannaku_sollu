@@ -244,12 +244,6 @@ function SplitPage() {
                 </div>
               </div>
             </div>
-            <button className="w-full h-16 border-2 border-dashed border-outline-variant rounded-xl flex items-center justify-center gap-2 text-outline-variant hover:text-secondary hover:border-secondary transition-all group">
-              <span className="material-symbols-outlined group-hover:scale-110 transition-transform">
-                add_circle
-              </span>
-              <span className="font-label-bold uppercase">Insert New Sub-Ledger</span>
-            </button>
           </div>
         </section>
       </main>
