@@ -31,8 +31,24 @@ test.describe("Members management", () => {
 
     const removeButton = page.locator('[data-testid^="remove-member-"]:not([disabled])');
     await removeButton.click();
+    await page.getByTestId("confirm-dialog-confirm").click();
 
     await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(1);
     await expect(page.getByText("Priya Shah")).toHaveCount(0);
+  });
+
+  test("cancelling the remove confirmation keeps the member", async ({ page }) => {
+    await page.getByTestId("add-member-button").click();
+    await page.getByTestId("member-name-input").fill("Priya Shah");
+    await page.getByTestId("add-member-submit").click();
+    await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(2);
+
+    const removeButton = page.locator('[data-testid^="remove-member-"]:not([disabled])');
+    await removeButton.click();
+    await expect(page.getByTestId("confirm-dialog")).toBeVisible();
+    await page.getByTestId("confirm-dialog-cancel").click();
+
+    await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(2);
+    await expect(page.getByText("Priya Shah")).toBeVisible();
   });
 });

@@ -55,25 +55,25 @@ test.describe("Summary gating & full happy path", () => {
 
     await page.getByTestId("nav-tab-split").click();
 
-    // Snack (₹10.00) to self "You" at default qty 1.5 => ₹15.00
+    // Snack (₹10.00) to self "You" at default qty 1.0 => ₹10.00
     await page.getByTestId("assign-member-select").selectOption({ label: "You" });
     await page.getByTestId("assign-item-select").selectOption({ label: "🛒 Snack" });
     await page.getByTestId("assign-button").click();
 
-    // Drink (₹5.00) to Priya at default qty 1.5 => ₹7.50
+    // Drink (₹5.00) to Priya at default qty 1.0 => ₹5.00
     await page.getByTestId("assign-member-select").selectOption({ label: "Priya" });
     await page.getByTestId("assign-item-select").selectOption({ label: "🛒 Drink" });
     await page.getByTestId("assign-button").click();
 
-    await expect(page.getByTestId("total-assigned")).toHaveText("₹22.50");
+    await expect(page.getByTestId("total-assigned")).toHaveText("₹15.00");
 
     await page.getByTestId("finalize-fab").click();
 
     await expect(page.getByRole("heading", { name: "Ledger Finalized" })).toBeVisible();
     const finalTotals = page.locator("h3:has-text('Final Totals') ~ div").first();
     await expect(finalTotals).toContainText("You");
-    await expect(finalTotals).toContainText("₹15.00");
+    await expect(finalTotals).toContainText("₹10.00");
     await expect(finalTotals).toContainText("Priya");
-    await expect(finalTotals).toContainText("₹7.50");
+    await expect(finalTotals).toContainText("₹5.00");
   });
 });

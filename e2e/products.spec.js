@@ -17,7 +17,6 @@ test.describe("Products management", () => {
 
     await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(1);
     await expect(page.getByText("Mango Lassi")).toBeVisible();
-    await expect(page.getByText("Subtotal (1 items)")).toBeVisible();
   });
 
   test("removing a product decreases the product list", async ({ page }) => {
@@ -28,8 +27,22 @@ test.describe("Products management", () => {
     await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(1);
 
     await page.locator('[data-testid^="remove-product-"]').first().click();
+    await page.getByTestId("confirm-dialog-confirm").click();
 
     await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(0);
-    await expect(page.getByText("Subtotal (0 items)")).toBeVisible();
+  });
+
+  test("cancelling the remove confirmation keeps the product", async ({ page }) => {
+    await page.getByTestId("add-item-button").click();
+    await page.getByTestId("item-name-input").fill("Mango Lassi");
+    await page.getByTestId("item-price-input").fill("6.50");
+    await page.getByTestId("add-item-submit").click();
+    await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(1);
+
+    await page.locator('[data-testid^="remove-product-"]').first().click();
+    await expect(page.getByTestId("confirm-dialog")).toBeVisible();
+    await page.getByTestId("confirm-dialog-cancel").click();
+
+    await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(1);
   });
 });

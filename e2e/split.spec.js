@@ -17,16 +17,16 @@ test.describe("Split / assign flow", () => {
   test("assigning an item updates the ledger and total assigned", async ({ page }) => {
     await expect(page.getByTestId("total-assigned")).toHaveText("₹0.00");
 
-    // default quantity is 1.5, so 10.00 * 1.5 = 15.00
+    // default quantity is 1.0, so 10.00 * 1.0 = 10.00
     await page.getByTestId("assign-button").click();
 
-    await expect(page.getByTestId("total-assigned")).toHaveText("₹15.00");
+    await expect(page.getByTestId("total-assigned")).toHaveText("₹10.00");
     await expect(page.getByTestId("finalize-fab")).toBeEnabled();
   });
 
   test("removing a ledger item decreases total assigned back to zero", async ({ page }) => {
     await page.getByTestId("assign-button").click();
-    await expect(page.getByTestId("total-assigned")).toHaveText("₹15.00");
+    await expect(page.getByTestId("total-assigned")).toHaveText("₹10.00");
 
     await page.getByText("Show more").click();
     await page.locator('[data-testid^="remove-ledger-item-"]').click();
