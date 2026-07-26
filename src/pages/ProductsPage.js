@@ -3,14 +3,30 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import AddItemModal from "../components/AddItemModal";
+import ConfirmDialog from "../components/ConfirmDialog";
+import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useProducts } from "../context/ProductsContext";
+import { useLedger } from "../context/LedgerContext";
 
 function ProductsPage() {
   const navigate = useNavigate();
   const { products, addProduct, removeProduct } = useProducts();
+  const { ledgerItems, removeLedgerItemsByProduct } = useLedger();
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+  const [productPendingRemoval, setProductPendingRemoval] = useState(null);
 
-  const subtotal = products.reduce((acc, p) => acc + p.price, 0);
+  const cancelRemoveProduct = () => setProductPendingRemoval(null);
+
+  const confirmRemoveProduct = () => {
+    if (!productPendingRemoval) return;
+    removeLedgerItemsByProduct(productPendingRemoval.id);
+    removeProduct(productPendingRemoval.id);
+    setProductPendingRemoval(null);
+  };
+
+  const affectedProductEntryCount = productPendingRemoval
+    ? ledgerItems.filter((item) => item.productId === productPendingRemoval.id).length
+    : 0;
 
   return (
     <div className="min-h-screen pb-32 pt-20">
@@ -33,7 +49,7 @@ function ProductsPage() {
               className="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center text-center shadow-sm relative group hover:border-secondary transition-colors"
             >
               <button
-                onClick={() => removeProduct(product.id)}
+                onClick={() => setProductPendingRemoval(product)}
                 className="absolute top-2 right-2 text-on-surface-variant hover:text-error transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
@@ -48,7 +64,7 @@ function ProductsPage() {
                 </p>
               </div>
               <button
-                onClick={() => removeProduct(product.id)}
+                onClick={() => setProductPendingRemoval(product)}
                 data-testid={`remove-product-${product.id}`}
                 className="font-label-bold text-label-bold text-error uppercase mt-auto hover:opacity-70"
               >
@@ -68,22 +84,7 @@ function ProductsPage() {
           </button>
         </div>
 
-        <section className="mt-section-margin bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-          <div className="bg-secondary text-on-primary px-card-padding py-2 font-label-bold text-label-bold uppercase">
-            Quick Ledger Summary
-          </div>
-          <div className="p-card-padding space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="font-body-md text-body-md text-on-surface-variant">
-                {products.length} items
-              </span>
-            </div>
-          </div>
-          <div className="bg-secondary-container/30 px-card-padding py-4 receipt-notched flex justify-between items-center">
-            <span className="font-headline-md text-headline-md text-primary">TOTAL</span>
-            <span className="font-headline-md text-headline-md text-secondary">₹{subtotal.toFixed(2)}</span>
-          </div>
-        </section>
+        <LedgerSummaryCard ledgerItems={ledgerItems} />
 
         <div className="mt-8">
           <button
@@ -101,6 +102,21 @@ function ProductsPage() {
           addProduct(payload);
           setIsAddItemOpen(false);
         }}
+      />
+      <ConfirmDialog
+        open={productPendingRemoval !== null}
+        title={productPendingRemoval ? `Remove ${productPendingRemoval.name}?` : ""}
+        message={
+          productPendingRemoval
+            ? affectedProductEntryCount === 0
+              ? "Are you sure you want to remove this item?"
+              : `This will permanently delete ${affectedProductEntryCount} ledger ${
+                  affectedProductEntryCount === 1 ? "entry" : "entries"
+                } calculated for this item. This cannot be undone.`
+            : ""
+        }
+        onConfirm={confirmRemoveProduct}
+        onClose={cancelRemoveProduct}
       />
       <BottomNavBar />
     </div>

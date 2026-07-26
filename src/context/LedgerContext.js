@@ -44,8 +44,24 @@ export function LedgerProvider({ children }) {
     setLedgerItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const removeLedgerItemsByMember = (memberId) => {
+    setLedgerItems((prev) => prev.filter((item) => item.memberId !== memberId));
+  };
+
+  const removeLedgerItemsByProduct = (productId) => {
+    setLedgerItems((prev) => prev.filter((item) => item.productId !== productId));
+  };
+
   return (
-    <LedgerContext.Provider value={{ ledgerItems, addLedgerItem, removeLedgerItem }}>
+    <LedgerContext.Provider
+      value={{
+        ledgerItems,
+        addLedgerItem,
+        removeLedgerItem,
+        removeLedgerItemsByMember,
+        removeLedgerItemsByProduct,
+      }}
+    >
       {children}
     </LedgerContext.Provider>
   );

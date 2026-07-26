@@ -80,7 +80,7 @@ function AddItemModal({ open, onClose, onAdd }) {
               value={emoji}
               readOnly
               onClick={() => setShowEmojiPicker((prev) => !prev)}
-              placeholder="🍔"
+              placeholder=""
               maxLength={4}
               className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-2xl text-center cursor-pointer focus:outline-none focus:border-secondary"
             />

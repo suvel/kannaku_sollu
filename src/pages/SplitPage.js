@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
+import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
@@ -12,7 +13,7 @@ function SplitPage() {
   const { members } = useMembers();
   const { products } = useProducts();
   const { ledgerItems, addLedgerItem, removeLedgerItem } = useLedger();
-  const [quantity, setQuantity] = useState(1.5);
+  const [quantity, setQuantity] = useState(1.0);
   const [activeMember, setActiveMember] = useState(members[0]?.id ?? "");
   const [selectedItem, setSelectedItem] = useState(products[0]?.id ?? "");
   const [expandedGroups, setExpandedGroups] = useState({});
@@ -34,11 +35,6 @@ function SplitPage() {
   };
 
   const canFinalize = members.length > 0 && products.length > 0;
-
-  const totalAssigned = ledgerItems.reduce(
-    (sum, item) => sum + parseFloat(item.price.replace("₹", "")),
-    0
-  );
 
   const memberReceiptGroups = members
     .map((member) => ({
@@ -284,20 +280,8 @@ function SplitPage() {
                   );
                 })}
               </div>
-              <div className="bg-surface-container-low p-4 notch-footer">
-                <div className="flex justify-between items-center">
-                  <span className="font-label-bold text-on-surface-variant uppercase text-xs">
-                    Total Assigned
-                  </span>
-                  <span
-                    data-testid="total-assigned"
-                    className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded"
-                  >
-                    ₹{totalAssigned.toFixed(2)}
-                  </span>
-                </div>
-              </div>
             </div>
+            <LedgerSummaryCard ledgerItems={ledgerItems} totalTestId="total-assigned" />
           </div>
         </section>
       </main>

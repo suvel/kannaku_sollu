@@ -3,17 +3,35 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import AddMemberModal from "../components/AddMemberModal";
+import ConfirmDialog from "../components/ConfirmDialog";
 import { useMembers } from "../context/MembersContext";
+import { useLedger } from "../context/LedgerContext";
+import { getMemberLedgerItems } from "../utils/ledgerSummary";
 
 function MembersPage() {
   const navigate = useNavigate();
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [memberPendingRemoval, setMemberPendingRemoval] = useState(null);
   const { members, addMember: addMemberToContext, removeMember } = useMembers();
+  const { ledgerItems, removeLedgerItemsByMember } = useLedger();
 
   const addMember = ({ name }) => {
     addMemberToContext({ name });
     setIsAddMemberOpen(false);
   };
+
+  const cancelRemoveMember = () => setMemberPendingRemoval(null);
+
+  const confirmRemoveMember = () => {
+    if (!memberPendingRemoval) return;
+    removeLedgerItemsByMember(memberPendingRemoval.id);
+    removeMember(memberPendingRemoval.id);
+    setMemberPendingRemoval(null);
+  };
+
+  const affectedMemberEntryCount = memberPendingRemoval
+    ? getMemberLedgerItems(ledgerItems, memberPendingRemoval.id).length
+    : 0;
 
   return (
     <div className="min-h-screen pb-32 pt-24">
@@ -55,7 +73,7 @@ function MembersPage() {
               </p>
               <div className="mt-4 pt-3 border-t border-dashed border-outline-variant w-full text-center">
                 <button
-                  onClick={() => removeMember(member.id)}
+                  onClick={() => setMemberPendingRemoval(member)}
                   data-testid={`remove-member-${member.id}`}
                   className={`font-label-bold text-label-bold ${member.id === "self"
                       ? "text-on-surface-variant opacity-30 cursor-not-allowed"
@@ -92,6 +110,21 @@ function MembersPage() {
         open={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
         onAdd={addMember}
+      />
+      <ConfirmDialog
+        open={memberPendingRemoval !== null}
+        title={memberPendingRemoval ? `Remove ${memberPendingRemoval.name}?` : ""}
+        message={
+          memberPendingRemoval
+            ? affectedMemberEntryCount === 0
+              ? "Are you sure you want to remove this member?"
+              : `This will permanently delete ${affectedMemberEntryCount} ledger ${
+                  affectedMemberEntryCount === 1 ? "entry" : "entries"
+                } assigned to this member. This cannot be undone.`
+            : ""
+        }
+        onConfirm={confirmRemoveMember}
+        onClose={cancelRemoveMember}
       />
       <BottomNavBar />
     </div>
