@@ -17,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:e2e": "playwright test --ui",
+    "test:e2eUI": "playwright test --ui",
+    "test:e2e": "playwright test",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },

@@ -104,7 +104,7 @@ function SplitPage() {
                       isActive ? "text-on-secondary-container" : "text-outline"
                     }`}
                   >
-                    {CURRENCY_SYMBOL}0.00
+                    {CURRENCY_SYMBOL}{getMemberTotal(ledgerItems, member.id).toFixed(2)}
                   </span>
                 </div>
               );
