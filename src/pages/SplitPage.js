@@ -6,7 +6,7 @@ import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
-import { formatQty, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
+import { formatQty, getGrandTotal, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
 import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function SplitPage() {
@@ -55,7 +55,7 @@ function SplitPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar total={`${CURRENCY_SYMBOL}248.50`} />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mt-4 mb-section-margin">
           <div className="flex items-baseline justify-between mb-2">

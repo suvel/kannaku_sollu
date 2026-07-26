@@ -6,7 +6,7 @@ import AddMemberModal from "../components/AddMemberModal";
 import ConfirmDialog from "../components/ConfirmDialog";
 import { useMembers } from "../context/MembersContext";
 import { useLedger } from "../context/LedgerContext";
-import { getMemberLedgerItems } from "../utils/ledgerSummary";
+import { getMemberLedgerItems, getGrandTotal } from "../utils/ledgerSummary";
 import { CURRENCY_SYMBOL, ROUTES, SELF_MEMBER_ID } from "../constants";
 
 function MembersPage() {
@@ -36,7 +36,7 @@ function MembersPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-24">
-      <TopAppBar total={`${CURRENCY_SYMBOL}0.00`} />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <div className="mb-section-margin">
           <div>

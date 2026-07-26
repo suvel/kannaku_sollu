@@ -7,6 +7,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
+import { getGrandTotal } from "../utils/ledgerSummary";
 import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function ProductsPage() {
@@ -31,7 +32,7 @@ function ProductsPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mb-6 flex justify-between items-end mt-4">
           <div>
