@@ -1,3 +1,5 @@
+import { CURRENCY_SYMBOL } from "../constants";
+
 export function formatQty(qty) {
   const num = Number(qty);
   return Number.isInteger(num) ? String(num) : num.toFixed(1);
@@ -15,14 +17,15 @@ export function getMemberExpression(ledgerItems, memberId) {
 
 export function getMemberTotal(ledgerItems, memberId) {
   return getMemberLedgerItems(ledgerItems, memberId).reduce(
-    (sum, item) => sum + parseFloat(String(item.price).replace("₹", "")),
+    (sum, item) => sum + parseFloat(String(item.price).replace(CURRENCY_SYMBOL, "")),
     0
   );
 }
 
 export function getGrandTotal(ledgerItems) {
+  console.log("Calculating grand total for ledger items:", ledgerItems);
   return ledgerItems.reduce(
-    (sum, item) => sum + parseFloat(String(item.price).replace("₹", "")),
+    (sum, item) => sum + parseFloat(String(item.price).replace(CURRENCY_SYMBOL, "")),
     0
   );
 }
@@ -31,11 +34,11 @@ export function getItemLegend(ledgerItems) {
   const seen = new Map();
   ledgerItems.forEach((item) => {
     if (!seen.has(item.productId)) {
-      const unitPrice = parseFloat(String(item.price).replace("₹", "")) / item.qty;
+      const unitPrice = parseFloat(String(item.price).replace(CURRENCY_SYMBOL, "")) / item.qty;
       seen.set(item.productId, {
         icon: item.icon,
         name: item.name,
-        price: `₹${unitPrice.toFixed(2)}`,
+        price: `${CURRENCY_SYMBOL}${unitPrice.toFixed(2)}`,
       });
     }
   });
@@ -47,7 +50,7 @@ export function buildWhatsAppSummary(members, ledgerItems) {
     .filter((member) => getMemberLedgerItems(ledgerItems, member.id).length > 0)
     .map(
       (member) =>
-        `👤 ${member.name}: ${getMemberExpression(ledgerItems, member.id)} = ₹${getMemberTotal(ledgerItems, member.id).toFixed(2)}`
+        `👤 ${member.name}: ${getMemberExpression(ledgerItems, member.id)} = ${CURRENCY_SYMBOL}${getMemberTotal(ledgerItems, member.id).toFixed(2)}`
     );
 
   return [
@@ -55,6 +58,6 @@ export function buildWhatsAppSummary(members, ledgerItems) {
     "",
     ...lines,
     "",
-    `💰 Total: ₹${getGrandTotal(ledgerItems).toFixed(2)}`,
+    `💰 Total: ${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`,
   ].join("\n");
 }
