@@ -195,12 +195,6 @@ function SplitPage() {
             <h2 className="font-label-bold text-label-bold uppercase text-on-surface-variant">
               Current Ledger
             </h2>
-            <div className="flex items-center gap-2">
-              <span className="font-label-xs font-label-bold text-outline uppercase">
-                Unassigned:
-              </span>
-              <span className="font-data-mono text-error">₹142.00</span>
-            </div>
           </div>
           <div className="space-y-4">
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
