@@ -1,6 +1,7 @@
 {
   "name": "kannaku-react",
   "version": "2.0.0",
+  "homepage": "https://suvel.github.io/kannaku_sollu",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^7.0.0",
@@ -16,7 +17,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:e2e": "playwright test --ui",
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -37,7 +40,9 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "autoprefixer": "^10.4.20",
+    "gh-pages": "^6.3.0",
     "postcss": "^8.4.49",
     "prettier": "2.6.1",
     "tailwindcss": "^3.4.15"

@@ -33,6 +33,8 @@ function SplitPage() {
     addLedgerItem(newItem);
   };
 
+  const canFinalize = members.length > 0 && products.length > 0;
+
   const totalAssigned = ledgerItems.reduce(
     (sum, item) => sum + parseFloat(item.price.replace("₹", "")),
     0
@@ -131,6 +133,7 @@ function SplitPage() {
                       const found = members.find((m) => String(m.id) === e.target.value);
                       if (found) setActiveMember(found.id);
                     }}
+                    data-testid="assign-member-select"
                     className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2"
                   >
                     {members.map((member) => (
@@ -147,6 +150,7 @@ function SplitPage() {
                   <select
                     value={selectedItem}
                     onChange={(e) => setSelectedItem(Number(e.target.value))}
+                    data-testid="assign-item-select"
                     className="w-full bg-transparent border-none focus:ring-0 font-body-md text-on-surface pt-2"
                   >
                     {products.map((product) => (
@@ -178,6 +182,7 @@ function SplitPage() {
                 </div>
                 <button
                   onClick={handleAssign}
+                  data-testid="assign-button"
                   className="bg-primary text-on-primary font-label-bold h-12 px-6 rounded-xl flex items-center gap-2 hover:bg-on-background transition-colors active:scale-95"
                 >
                   <span className="material-symbols-outlined text-sm">add</span>
@@ -193,12 +198,6 @@ function SplitPage() {
             <h2 className="font-label-bold text-label-bold uppercase text-on-surface-variant">
               Current Ledger
             </h2>
-            <div className="flex items-center gap-2">
-              <span className="font-label-xs font-label-bold text-outline uppercase">
-                Unassigned:
-              </span>
-              <span className="font-data-mono text-error">₹142.00</span>
-            </div>
           </div>
           <div className="space-y-4">
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden flex flex-col">
@@ -267,6 +266,7 @@ function SplitPage() {
                                 <p className="font-data-mono text-on-surface">{item.price}</p>
                                 <button
                                   onClick={() => removeLedgerItem(item.id)}
+                                  data-testid={`remove-ledger-item-${item.id}`}
                                   className="text-error opacity-0 group-hover:opacity-100 transition-opacity"
                                 >
                                   <span className="material-symbols-outlined text-sm">close</span>
@@ -289,7 +289,10 @@ function SplitPage() {
                   <span className="font-label-bold text-on-surface-variant uppercase text-xs">
                     Total Assigned
                   </span>
-                  <span className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded">
+                  <span
+                    data-testid="total-assigned"
+                    className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded"
+                  >
                     ₹{totalAssigned.toFixed(2)}
                   </span>
                 </div>
@@ -299,8 +302,10 @@ function SplitPage() {
         </section>
       </main>
       <button
-        onClick={() => navigate("/summary")}
-        className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40"
+        onClick={() => canFinalize && navigate("/summary")}
+        disabled={!canFinalize}
+        data-testid="finalize-fab"
+        className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"
       >
         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
           check

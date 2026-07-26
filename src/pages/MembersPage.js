@@ -35,6 +35,7 @@ function MembersPage() {
           {members.map((member) => (
             <div
               key={member.id}
+              data-testid={`member-card-${member.id}`}
               className="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center relative shadow-sm"
             >
               <div
@@ -55,6 +56,7 @@ function MembersPage() {
               <div className="mt-4 pt-3 border-t border-dashed border-outline-variant w-full text-center">
                 <button
                   onClick={() => removeMember(member.id)}
+                  data-testid={`remove-member-${member.id}`}
                   className={`font-label-bold text-label-bold ${member.id === "self"
                       ? "text-on-surface-variant opacity-30 cursor-not-allowed"
                       : "text-error hover:underline transition-all"
@@ -68,6 +70,7 @@ function MembersPage() {
           ))}
           <button
             onClick={() => setIsAddMemberOpen(true)}
+            data-testid="add-member-button"
             className="dashed-border bg-transparent p-card-padding flex flex-col items-center group hover:bg-secondary-container/10 transition-colors justify-center"
           >
             <div className="w-12 h-12 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center mb-3 group-hover:border-secondary group-hover:text-secondary text-outline-variant transition-colors">
