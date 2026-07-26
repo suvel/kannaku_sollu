@@ -33,6 +33,8 @@ function SplitPage() {
     addLedgerItem(newItem);
   };
 
+  const canFinalize = members.length > 0 && products.length > 0;
+
   const totalAssigned = ledgerItems.reduce(
     (sum, item) => sum + parseFloat(item.price.replace("₹", "")),
     0
@@ -299,8 +301,9 @@ function SplitPage() {
         </section>
       </main>
       <button
-        onClick={() => navigate("/summary")}
-        className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40"
+        onClick={() => canFinalize && navigate("/summary")}
+        disabled={!canFinalize}
+        className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"
       >
         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
           check

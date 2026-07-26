@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import { useMembers } from "../context/MembersContext";
+import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
 import {
   buildWhatsAppSummary,
@@ -15,8 +16,13 @@ import {
 
 function SummaryPage() {
   const { members } = useMembers();
+  const { products } = useProducts();
   const { ledgerItems } = useLedger();
   const [copied, setCopied] = useState(false);
+
+  if (members.length === 0 || products.length === 0) {
+    return <Navigate to="/" replace />;
+  }
 
   const finalTotals = members
     .filter((member) => getMemberLedgerItems(ledgerItems, member.id).length > 0)

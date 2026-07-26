@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useMembers } from "./MembersContext";
+import { useProducts } from "./ProductsContext";
 
 const LedgerContext = createContext(null);
 
@@ -10,6 +12,14 @@ const INITIAL_LEDGER_ITEMS = [
 
 export function LedgerProvider({ children }) {
   const [ledgerItems, setLedgerItems] = useState(INITIAL_LEDGER_ITEMS);
+  const { members } = useMembers();
+  const { products } = useProducts();
+
+  useEffect(() => {
+    if (members.length <= 1 && products.length === 0) {
+      setLedgerItems([]);
+    }
+  }, [members.length, products.length]);
 
   const addLedgerItem = (item) => {
     setLedgerItems((prev) => {

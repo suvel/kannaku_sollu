@@ -1,4 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
+import { useMembers } from "../context/MembersContext";
+import { useProducts } from "../context/ProductsContext";
 
 const TABS = [
   { to: "/", icon: "inventory_2", label: "Products" },
@@ -9,12 +11,30 @@ const TABS = [
 
 function BottomNavBar() {
   const location = useLocation();
+  const { members } = useMembers();
+  const { products } = useProducts();
+  const canReachSummary = members.length > 0 && products.length > 0;
 
   return (
     <nav className="fixed bottom-0 left-0 w-full z-50 h-20 border-t border-outline-variant bg-background">
       <div className="max-w-[768px] mx-auto flex justify-around items-center h-full px-container-margin pb-safe">
         {TABS.map((tab) => {
           const isActive = location.pathname === tab.to;
+
+          if (tab.to === "/summary" && !canReachSummary) {
+            return (
+              <span
+                key={tab.to}
+                className="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 opacity-40 cursor-not-allowed"
+              >
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>
+                  {tab.icon}
+                </span>
+                <span className="font-label-bold text-label-bold">{tab.label}</span>
+              </span>
+            );
+          }
+
           return (
             <Link
               key={tab.to}
