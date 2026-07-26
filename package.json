@@ -1,7 +1,7 @@
 {
   "name": "kannaku-react",
   "version": "2.0.0",
-  "homepage": "https://suvel.github.io/kannaku_sollu/",
+  "homepage": "https://suvel.github.io/kannaku_sollu",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^7.0.0",
