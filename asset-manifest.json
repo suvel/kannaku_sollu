@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/kannaku_sollu/static/css/main.57c712cb.css",
-    "main.js": "/kannaku_sollu/static/js/main.5a46c128.js",
+    "main.css": "/kannaku_sollu/static/css/main.3d617c3d.css",
+    "main.js": "/kannaku_sollu/static/js/main.c31e6227.js",
     "index.html": "/kannaku_sollu/index.html",
-    "main.57c712cb.css.map": "/kannaku_sollu/static/css/main.57c712cb.css.map",
-    "main.5a46c128.js.map": "/kannaku_sollu/static/js/main.5a46c128.js.map"
+    "main.3d617c3d.css.map": "/kannaku_sollu/static/css/main.3d617c3d.css.map",
+    "main.c31e6227.js.map": "/kannaku_sollu/static/js/main.c31e6227.js.map"
   },
   "entrypoints": [
-    "static/css/main.57c712cb.css",
-    "static/js/main.5a46c128.js"
+    "static/css/main.3d617c3d.css",
+    "static/js/main.c31e6227.js"
   ]
 }
