@@ -29,6 +29,7 @@ function ProductsPage() {
           {products.map((product) => (
             <div
               key={product.id}
+              data-testid={`product-card-${product.id}`}
               className="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center text-center shadow-sm relative group hover:border-secondary transition-colors"
             >
               <button
@@ -48,6 +49,7 @@ function ProductsPage() {
               </div>
               <button
                 onClick={() => removeProduct(product.id)}
+                data-testid={`remove-product-${product.id}`}
                 className="font-label-bold text-label-bold text-error uppercase mt-auto hover:opacity-70"
               >
                 Remove
@@ -56,6 +58,7 @@ function ProductsPage() {
           ))}
           <button
             onClick={() => setIsAddItemOpen(true)}
+            data-testid="add-item-button"
             className="border-2 border-dashed border-outline-variant rounded-xl p-card-padding flex flex-col items-center justify-center text-on-surface-variant hover:border-secondary hover:text-secondary transition-all group min-h-[160px]"
           >
             <span className="material-symbols-outlined text-3xl mb-2 group-hover:scale-110 transition-transform">

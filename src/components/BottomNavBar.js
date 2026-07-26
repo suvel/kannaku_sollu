@@ -25,6 +25,8 @@ function BottomNavBar() {
             return (
               <span
                 key={tab.to}
+                data-testid={`nav-tab-${tab.label.toLowerCase()}`}
+                aria-disabled="true"
                 className="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 opacity-40 cursor-not-allowed"
               >
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>
@@ -39,6 +41,7 @@ function BottomNavBar() {
             <Link
               key={tab.to}
               to={tab.to}
+              data-testid={`nav-tab-${tab.label.toLowerCase()}`}
               className={`flex flex-col items-center justify-center ${
                 isActive
                   ? "text-secondary bg-secondary-container/20 rounded-full px-4 py-1 scale-95 transition-transform duration-200"

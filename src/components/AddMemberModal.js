@@ -46,6 +46,7 @@ function AddMemberModal({ open, onClose, onAdd }) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Member name"
               autoFocus
+              data-testid="member-name-input"
               className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 font-body-md focus:outline-none focus:border-secondary"
             />
           </div>
@@ -62,6 +63,7 @@ function AddMemberModal({ open, onClose, onAdd }) {
           <button
             type="submit"
             disabled={!isValid}
+            data-testid="add-member-submit"
             className="flex-1 bg-primary text-on-primary rounded-xl py-3 font-label-bold text-label-bold uppercase disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
           >
             Add

@@ -17,6 +17,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:e2e": "playwright test --ui",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },
@@ -39,6 +40,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.0",
     "autoprefixer": "^10.4.20",
     "gh-pages": "^6.3.0",
     "postcss": "^8.4.49",
