@@ -13,6 +13,7 @@ import {
   getMemberLedgerItems,
   getMemberTotal,
 } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function SummaryPage() {
   const { members } = useMembers();
@@ -21,7 +22,7 @@ function SummaryPage() {
   const [copied, setCopied] = useState(false);
 
   if (members.length === 0 || products.length === 0) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={ROUTES.PRODUCTS} replace />;
   }
 
   const finalTotals = members
@@ -30,11 +31,11 @@ function SummaryPage() {
       id: member.id,
       name: member.name,
       expression: getMemberExpression(ledgerItems, member.id),
-      amount: `₹${getMemberTotal(ledgerItems, member.id).toFixed(2)}`,
+      amount: `${CURRENCY_SYMBOL}${getMemberTotal(ledgerItems, member.id).toFixed(2)}`,
     }));
 
   const itemLegend = getItemLegend(ledgerItems);
-  const grandTotal = `₹${getGrandTotal(ledgerItems).toFixed(2)}`;
+  const grandTotal = `${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`;
   const shareText = buildWhatsAppSummary(members, ledgerItems);
   const whatsappHref = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
@@ -122,7 +123,7 @@ function SummaryPage() {
         </div>
 
         <Link
-          to="/"
+          to={ROUTES.PRODUCTS}
           className="inline-block bg-primary text-on-primary px-8 py-3 rounded-xl font-label-bold uppercase"
         >
           Start New Ledger

@@ -1,13 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
+import { NAV_TABS, ROUTES } from "../constants";
 
-const TABS = [
-  { to: "/", icon: "inventory_2", label: "Products" },
-  { to: "/members", icon: "group", label: "Members" },
-  { to: "/split", icon: "rotate_90_degrees_ccw", label: "Split" },
-  { to: "/summary", icon: "receipt_long", label: "Summary" },
-];
+const TABS = NAV_TABS;
 
 function BottomNavBar() {
   const location = useLocation();
@@ -21,7 +17,7 @@ function BottomNavBar() {
         {TABS.map((tab) => {
           const isActive = location.pathname === tab.to;
 
-          if (tab.to === "/summary" && !canReachSummary) {
+          if (tab.to === ROUTES.SUMMARY && !canReachSummary) {
             return (
               <span
                 key={tab.to}

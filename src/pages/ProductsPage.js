@@ -7,6 +7,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
+import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function ProductsPage() {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ function ProductsPage() {
                   {product.name}
                 </p>
                 <p className="font-data-mono text-data-mono text-secondary mb-3">
-                  ₹{product.price.toFixed(2)}
+                  {CURRENCY_SYMBOL}{product.price.toFixed(2)}
                 </p>
               </div>
               <button
@@ -88,7 +89,7 @@ function ProductsPage() {
 
         <div className="mt-8">
           <button
-            onClick={() => navigate("/members")}
+            onClick={() => navigate(ROUTES.MEMBERS)}
             className="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40"
           >
             <span className="material-symbols-outlined text-2xl">arrow_forward</span>

@@ -7,6 +7,7 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import { useMembers } from "../context/MembersContext";
 import { useLedger } from "../context/LedgerContext";
 import { getMemberLedgerItems } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES, SELF_MEMBER_ID } from "../constants";
 
 function MembersPage() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ function MembersPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-24">
-      <TopAppBar total="₹0.00" />
+      <TopAppBar total={`${CURRENCY_SYMBOL}0.00`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <div className="mb-section-margin">
           <div>
@@ -75,11 +76,11 @@ function MembersPage() {
                 <button
                   onClick={() => setMemberPendingRemoval(member)}
                   data-testid={`remove-member-${member.id}`}
-                  className={`font-label-bold text-label-bold ${member.id === "self"
+                  className={`font-label-bold text-label-bold ${member.id === SELF_MEMBER_ID
                       ? "text-on-surface-variant opacity-30 cursor-not-allowed"
                       : "text-error hover:underline transition-all"
                     }`}
-                  disabled={member.id === "self"}
+                  disabled={member.id === SELF_MEMBER_ID}
                 >
                   REMOVE
                 </button>
@@ -101,7 +102,7 @@ function MembersPage() {
         </div>
       </main>
       <button
-        onClick={() => navigate("/split")}
+        onClick={() => navigate(ROUTES.SPLIT)}
         className="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40"
       >
         <span className="material-symbols-outlined text-2xl">arrow_forward</span>

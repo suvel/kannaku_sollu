@@ -1,21 +1,13 @@
 import { createContext, useContext, useState } from "react";
+import { INITIAL_MEMBERS, SELF_MEMBER_ID } from "../constants";
 
 const MembersContext = createContext(null);
 
 export function MembersProvider({ children }) {
-  const [members, setMembers] = useState([
-    { id: "self", name: "You", avatar: null, initial: "U" },
-    {
-      id: "sarah",
-      name: "Sarah Miller",
-      avatar: null,
-      initial: "SM",
-    },
-    { id: "marcus", name: "Marcus Wong", avatar: null, initial: "MW" },
-  ]);
+  const [members, setMembers] = useState(INITIAL_MEMBERS);
 
   const removeMember = (id) => {
-    if (id === "self") return;
+    if (id === SELF_MEMBER_ID) return;
     setMembers(members.filter((m) => m.id !== id));
   };
 

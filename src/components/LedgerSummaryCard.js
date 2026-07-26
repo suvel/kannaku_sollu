@@ -1,4 +1,5 @@
 import { getGrandTotal } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL } from "../constants";
 
 function LedgerSummaryCard({ ledgerItems, totalTestId }) {
   const total = getGrandTotal(ledgerItems);
@@ -18,7 +19,7 @@ function LedgerSummaryCard({ ledgerItems, totalTestId }) {
       <div className="bg-secondary-container/30 px-card-padding py-4 receipt-notched flex justify-between items-center">
         <span className="font-headline-md text-headline-md text-primary">TOTAL</span>
         <span data-testid={totalTestId} className="font-headline-md text-headline-md text-secondary">
-          ₹{total.toFixed(2)}
+          {CURRENCY_SYMBOL}{total.toFixed(2)}
         </span>
       </div>
     </section>

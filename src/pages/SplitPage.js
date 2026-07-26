@@ -7,6 +7,7 @@ import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
 import { formatQty, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function SplitPage() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function SplitPage() {
       icon: product.emoji,
       name: product.name,
       qty: quantity,
-      price: `₹${price.toFixed(2)}`,
+      price: `${CURRENCY_SYMBOL}${price.toFixed(2)}`,
     };
     addLedgerItem(newItem);
   };
@@ -54,7 +55,7 @@ function SplitPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar total="₹248.50" />
+      <TopAppBar total={`${CURRENCY_SYMBOL}248.50`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mt-4 mb-section-margin">
           <div className="flex items-baseline justify-between mb-2">
@@ -103,7 +104,7 @@ function SplitPage() {
                       isActive ? "text-on-secondary-container" : "text-outline"
                     }`}
                   >
-                    ₹0.00
+                    {CURRENCY_SYMBOL}0.00
                   </span>
                 </div>
               );
@@ -211,7 +212,7 @@ function SplitPage() {
                       <div>
                       {group.member && (
                         <span className="font-data-mono text-[10px] text-outline">
-                          {getMemberExpression(ledgerItems, group.member.id)} · ₹
+                          {getMemberExpression(ledgerItems, group.member.id)} · {CURRENCY_SYMBOL}
                           {getMemberTotal(ledgerItems, group.member.id).toFixed(2)}
                         </span>
                       )}
@@ -286,7 +287,7 @@ function SplitPage() {
         </section>
       </main>
       <button
-        onClick={() => canFinalize && navigate("/summary")}
+        onClick={() => canFinalize && navigate(ROUTES.SUMMARY)}
         disabled={!canFinalize}
         data-testid="finalize-fab"
         className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"

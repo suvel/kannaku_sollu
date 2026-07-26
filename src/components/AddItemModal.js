@@ -1,37 +1,18 @@
 import { useState } from "react";
-
-const EMOJI_CATEGORIES = {
-  Food: [
-    "🍔", "🍟", "🍕", "🌭", "🥪", "🌮",
-    "🌯", "🥗", "🍝", "🍣", "🍱", "🍜",
-    "🍲", "🥘", "🍛", "🍤", "🍗", "🥩",
-    "🧀", "🥐", "🍩", "🍪", "🍦", "🍫",
-    "🍰", "🥞", "🧇", "🥤", "☕", "🍷",
-    "🍺", "🍹",
-  ],
-  Grocery: [
-    "🥦", "🍅", "🥑", "🌽", "🥕", "🧅",
-    "🧄", "🥔", "🍌", "🍊", "🍋", "🥭",
-    "🍓", "🍒", "🍎", "🍇", "🍉", "🍈",
-    "🥛", "🥚", "🧈", "🍞", "🥫", "🍚",
-    "🍯", "🧂", "🌾", "🛢️", "🧃", "🛒",
-  ],
-  Things: [
-    "📱", "💻", "🖥️", "⌚", "🎧", "📷",
-    "🎮", "🖨️", "🔌", "💡", "🔑", "📚",
-    "📖", "✏️", "🖊️", "📎", "🧾", "💼",
-    "🎒", "👕", "👟", "🧥", "🧢", "👜",
-    "🧴", "🧼", "🪒", "🧻", "🧹", "🧺",
-    "🔧", "🔨", "🧰", "🎁", "🧸", "⚽",
-  ],
-};
+import {
+  DEFAULT_EMOJI_CATEGORY,
+  DEFAULT_ITEM_EMOJI,
+  EMOJI_CATEGORIES,
+  ITEM_NAME_PLACEHOLDER,
+  ITEM_PRICE_PLACEHOLDER,
+} from "../constants";
 
 function AddItemModal({ open, onClose, onAdd }) {
   const [emoji, setEmoji] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [emojiCategory, setEmojiCategory] = useState("Food");
+  const [emojiCategory, setEmojiCategory] = useState(DEFAULT_EMOJI_CATEGORY);
 
   if (!open) return null;
 
@@ -43,7 +24,7 @@ function AddItemModal({ open, onClose, onAdd }) {
     setName("");
     setPrice("");
     setShowEmojiPicker(false);
-    setEmojiCategory("Food");
+    setEmojiCategory(DEFAULT_EMOJI_CATEGORY);
   };
 
   const handleClose = () => {
@@ -54,7 +35,7 @@ function AddItemModal({ open, onClose, onAdd }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!isValid) return;
-    onAdd({ emoji: emoji.trim() || "🛒", name: name.trim(), price: parsedPrice });
+    onAdd({ emoji: emoji.trim() || DEFAULT_ITEM_EMOJI, name: name.trim(), price: parsedPrice });
     reset();
   };
 
@@ -129,7 +110,7 @@ function AddItemModal({ open, onClose, onAdd }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Item name"
+              placeholder={ITEM_NAME_PLACEHOLDER}
               data-testid="item-name-input"
               className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 font-body-md focus:outline-none focus:border-secondary"
             />
@@ -145,7 +126,7 @@ function AddItemModal({ open, onClose, onAdd }) {
               min="0"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              placeholder="0.00"
+              placeholder={ITEM_PRICE_PLACEHOLDER}
               data-testid="item-price-input"
               className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 font-data-mono text-data-mono focus:outline-none focus:border-secondary"
             />
