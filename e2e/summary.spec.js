@@ -76,4 +76,56 @@ test.describe("Summary gating & full happy path", () => {
     await expect(finalTotals).toContainText("Priya");
     await expect(finalTotals).toContainText("₹5.00");
   });
+
+  test("Copy button copies the share text to clipboard and flips to a Copied state", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+
+    await page.getByTestId("nav-tab-products").click();
+    await page.getByTestId("add-item-button").click();
+    await page.getByTestId("item-name-input").fill("Snack");
+    await page.getByTestId("item-price-input").fill("10.00");
+    await page.getByTestId("add-item-submit").click();
+
+    await page.getByTestId("nav-tab-split").click();
+    await page.getByTestId("assign-button").click();
+    await page.getByTestId("finalize-fab").click();
+
+    // accessible name is "content_copy Copy" (icon ligature text + label), so match by substring
+    const copyButton = page.getByRole("button", { name: "Copy" });
+    await copyButton.click();
+    await expect(page.getByRole("button", { name: "Copied!" })).toBeVisible();
+
+    const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+    expect(clipboardText).toContain("🧾 Split Summary");
+    expect(clipboardText).toContain("Total: ₹10.00");
+  });
+
+  test("WhatsApp share link href is correctly percent-encoded", async ({ page }) => {
+    await page.getByTestId("nav-tab-members").click();
+    await page.getByTestId("add-member-button").click();
+    await page.getByTestId("member-name-input").fill("Anu & Ravi");
+    await page.getByTestId("add-member-submit").click();
+
+    await page.getByTestId("nav-tab-products").click();
+    await page.getByTestId("add-item-button").click();
+    await page.getByTestId("item-name-input").fill("Snack");
+    await page.getByTestId("item-price-input").fill("10.00");
+    await page.getByTestId("add-item-submit").click();
+
+    await page.getByTestId("nav-tab-split").click();
+    await page.getByTestId("assign-member-select").selectOption({ label: "Anu & Ravi" });
+    await page.getByTestId("assign-button").click();
+    await page.getByTestId("finalize-fab").click();
+
+    const whatsappLink = page.getByRole("link", { name: "WhatsApp" });
+    const href = await whatsappLink.getAttribute("href");
+    expect(href).toMatch(/^https:\/\/wa\.me\/\?text=/);
+
+    const rawParam = href.split("text=")[1];
+    expect(rawParam).not.toContain("&"); // must be percent-encoded, not a raw query-breaking "&"
+    expect(decodeURIComponent(rawParam)).toContain("Anu & Ravi");
+  });
 });

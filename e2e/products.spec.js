@@ -45,4 +45,18 @@ test.describe("Products management", () => {
 
     await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(1);
   });
+
+  test("TopAppBar total on Products page should reflect the actual grand ledger total, not a hardcoded ₹0.00", async ({ page }) => {
+    await page.getByTestId("add-item-button").click();
+    await page.getByTestId("item-name-input").fill("Test Snack");
+    await page.getByTestId("item-price-input").fill("10.00");
+    await page.getByTestId("add-item-submit").click();
+
+    await page.getByTestId("nav-tab-split").click();
+    await page.getByTestId("assign-button").click();
+    await expect(page.getByTestId("total-assigned")).toHaveText("₹10.00");
+
+    await page.getByTestId("nav-tab-products").click();
+    await expect(page.locator("header")).toContainText("TOTAL: ₹10.00");
+  });
 });

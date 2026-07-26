@@ -162,6 +162,24 @@ describe("getItemLegend", () => {
       { icon: "🥤", name: "Soda", price: price(10) },
     ]);
   });
+
+  // Negative test case 3: qty of 0 is not guarded against and produces an Infinity unit price.
+  // Not reachable via the current UI (quantity floor is 0.5, AddItemModal rejects price <= 0),
+  // but documents a real gap if ledger items are ever created through another path.
+  it("computes an Infinity unit price when an item has qty 0 (documents a missing zero-guard)", () => {
+    const zeroQtyItem = {
+      id: 20,
+      memberId: "sarah",
+      productId: 9,
+      icon: "🥤",
+      name: "FreeSample",
+      qty: 0,
+      price: price(5),
+    };
+    expect(getItemLegend([zeroQtyItem])).toEqual([
+      { icon: "🥤", name: "FreeSample", price: `${CURRENCY_SYMBOL}Infinity` },
+    ]);
+  });
 });
 
 describe("buildWhatsAppSummary", () => {
