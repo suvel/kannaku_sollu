@@ -3,21 +3,40 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import AddMemberModal from "../components/AddMemberModal";
+import ConfirmDialog from "../components/ConfirmDialog";
 import { useMembers } from "../context/MembersContext";
+import { useLedger } from "../context/LedgerContext";
+import { getMemberLedgerItems, getGrandTotal } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES, SELF_MEMBER_ID } from "../constants";
 
 function MembersPage() {
   const navigate = useNavigate();
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [memberPendingRemoval, setMemberPendingRemoval] = useState(null);
   const { members, addMember: addMemberToContext, removeMember } = useMembers();
+  const { ledgerItems, removeLedgerItemsByMember } = useLedger();
 
   const addMember = ({ name }) => {
     addMemberToContext({ name });
     setIsAddMemberOpen(false);
   };
 
+  const cancelRemoveMember = () => setMemberPendingRemoval(null);
+
+  const confirmRemoveMember = () => {
+    if (!memberPendingRemoval) return;
+    removeLedgerItemsByMember(memberPendingRemoval.id);
+    removeMember(memberPendingRemoval.id);
+    setMemberPendingRemoval(null);
+  };
+
+  const affectedMemberEntryCount = memberPendingRemoval
+    ? getMemberLedgerItems(ledgerItems, memberPendingRemoval.id).length
+    : 0;
+
   return (
     <div className="min-h-screen pb-32 pt-24">
-      <TopAppBar total="₹0.00" />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <div className="mb-section-margin">
           <div>
@@ -55,13 +74,13 @@ function MembersPage() {
               </p>
               <div className="mt-4 pt-3 border-t border-dashed border-outline-variant w-full text-center">
                 <button
-                  onClick={() => removeMember(member.id)}
+                  onClick={() => setMemberPendingRemoval(member)}
                   data-testid={`remove-member-${member.id}`}
-                  className={`font-label-bold text-label-bold ${member.id === "self"
+                  className={`font-label-bold text-label-bold ${member.id === SELF_MEMBER_ID
                       ? "text-on-surface-variant opacity-30 cursor-not-allowed"
                       : "text-error hover:underline transition-all"
                     }`}
-                  disabled={member.id === "self"}
+                  disabled={member.id === SELF_MEMBER_ID}
                 >
                   REMOVE
                 </button>
@@ -83,7 +102,7 @@ function MembersPage() {
         </div>
       </main>
       <button
-        onClick={() => navigate("/split")}
+        onClick={() => navigate(ROUTES.SPLIT)}
         className="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40"
       >
         <span className="material-symbols-outlined text-2xl">arrow_forward</span>
@@ -92,6 +111,21 @@ function MembersPage() {
         open={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
         onAdd={addMember}
+      />
+      <ConfirmDialog
+        open={memberPendingRemoval !== null}
+        title={memberPendingRemoval ? `Remove ${memberPendingRemoval.name}?` : ""}
+        message={
+          memberPendingRemoval
+            ? affectedMemberEntryCount === 0
+              ? "Are you sure you want to remove this member?"
+              : `This will permanently delete ${affectedMemberEntryCount} ledger ${
+                  affectedMemberEntryCount === 1 ? "entry" : "entries"
+                } assigned to this member. This cannot be undone.`
+            : ""
+        }
+        onConfirm={confirmRemoveMember}
+        onClose={cancelRemoveMember}
       />
       <BottomNavBar />
     </div>

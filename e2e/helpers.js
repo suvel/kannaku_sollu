@@ -10,6 +10,7 @@ async function resetAppState(page) {
   const removeProductButtons = page.locator('[data-testid^="remove-product-"]');
   while ((await removeProductButtons.count()) > 0) {
     await removeProductButtons.first().click();
+    await page.getByTestId("confirm-dialog-confirm").click();
   }
   await expect(page.locator('[data-testid^="product-card-"]')).toHaveCount(0);
 
@@ -17,6 +18,7 @@ async function resetAppState(page) {
   const removeMemberButtons = page.locator('[data-testid^="remove-member-"]:not([disabled])');
   while ((await removeMemberButtons.count()) > 0) {
     await removeMemberButtons.first().click();
+    await page.getByTestId("confirm-dialog-confirm").click();
   }
   await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(1);
 

@@ -31,8 +31,39 @@ test.describe("Members management", () => {
 
     const removeButton = page.locator('[data-testid^="remove-member-"]:not([disabled])');
     await removeButton.click();
+    await page.getByTestId("confirm-dialog-confirm").click();
 
     await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(1);
     await expect(page.getByText("Priya Shah")).toHaveCount(0);
+  });
+
+  test("cancelling the remove confirmation keeps the member", async ({ page }) => {
+    await page.getByTestId("add-member-button").click();
+    await page.getByTestId("member-name-input").fill("Priya Shah");
+    await page.getByTestId("add-member-submit").click();
+    await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(2);
+
+    const removeButton = page.locator('[data-testid^="remove-member-"]:not([disabled])');
+    await removeButton.click();
+    await expect(page.getByTestId("confirm-dialog")).toBeVisible();
+    await page.getByTestId("confirm-dialog-cancel").click();
+
+    await expect(page.locator('[data-testid^="member-card-"]')).toHaveCount(2);
+    await expect(page.getByText("Priya Shah")).toBeVisible();
+  });
+
+  test("TopAppBar total on Members page should reflect the actual grand ledger total, not a hardcoded ₹0.00", async ({ page }) => {
+    await page.getByTestId("nav-tab-products").click();
+    await page.getByTestId("add-item-button").click();
+    await page.getByTestId("item-name-input").fill("Test Snack");
+    await page.getByTestId("item-price-input").fill("10.00");
+    await page.getByTestId("add-item-submit").click();
+
+    await page.getByTestId("nav-tab-split").click();
+    await page.getByTestId("assign-button").click();
+    await expect(page.getByTestId("total-assigned")).toHaveText("₹10.00");
+
+    await page.getByTestId("nav-tab-members").click();
+    await expect(page.locator("header")).toContainText("TOTAL: ₹10.00");
   });
 });

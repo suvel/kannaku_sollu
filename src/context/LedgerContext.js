@@ -1,14 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useMembers } from "./MembersContext";
 import { useProducts } from "./ProductsContext";
+import { CURRENCY_SYMBOL, INITIAL_LEDGER_ITEMS } from "../constants";
 
 const LedgerContext = createContext(null);
-
-const INITIAL_LEDGER_ITEMS = [
-  { id: 1, memberId: "sarah", productId: 1, icon: "🍔", name: "Double Burger", qty: 1, price: "₹14.50" },
-  { id: 2, memberId: "marcus", productId: 2, icon: "🍟", name: "Truffle Fries", qty: 2, price: "₹16.50" },
-  { id: 3, memberId: "self", productId: 4, icon: "🥗", name: "Greek Salad", qty: 0.5, price: "₹6.25" },
-];
 
 export function LedgerProvider({ children }) {
   const [ledgerItems, setLedgerItems] = useState(INITIAL_LEDGER_ITEMS);
@@ -23,19 +18,20 @@ export function LedgerProvider({ children }) {
 
   const addLedgerItem = (item) => {
     setLedgerItems((prev) => {
+      console.log({prev, item})
       const idx = prev.findIndex(
         (li) => li.memberId === item.memberId && li.productId === item.productId
       );
       if (idx === -1) {
         return [...prev, { id: Date.now(), ...item }];
       }
-      const existing = prev[idx];
+      const existing = prev[idx]||0;
       const mergedQty = existing.qty + item.qty;
       const mergedPrice =
-        parseFloat(String(existing.price).replace("₹", "")) +
-        parseFloat(String(item.price).replace("₹", ""));
+        parseFloat(String(existing.price).replace(CURRENCY_SYMBOL, "")) +
+        parseFloat(String(item.price).replace(CURRENCY_SYMBOL, ""));
       const next = [...prev];
-      next[idx] = { ...existing, qty: mergedQty, price: `₹${mergedPrice.toFixed(2)}` };
+      next[idx] = { ...existing, qty: mergedQty, price: `${CURRENCY_SYMBOL}${mergedPrice.toFixed(2)}` };
       return next;
     });
   };
@@ -44,8 +40,24 @@ export function LedgerProvider({ children }) {
     setLedgerItems((prev) => prev.filter((item) => item.id !== id));
   };
 
+  const removeLedgerItemsByMember = (memberId) => {
+    setLedgerItems((prev) => prev.filter((item) => item.memberId !== memberId));
+  };
+
+  const removeLedgerItemsByProduct = (productId) => {
+    setLedgerItems((prev) => prev.filter((item) => item.productId !== productId));
+  };
+
   return (
-    <LedgerContext.Provider value={{ ledgerItems, addLedgerItem, removeLedgerItem }}>
+    <LedgerContext.Provider
+      value={{
+        ledgerItems,
+        addLedgerItem,
+        removeLedgerItem,
+        removeLedgerItemsByMember,
+        removeLedgerItemsByProduct,
+      }}
+    >
       {children}
     </LedgerContext.Provider>
   );

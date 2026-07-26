@@ -2,17 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
+import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useMembers } from "../context/MembersContext";
 import { useProducts } from "../context/ProductsContext";
 import { useLedger } from "../context/LedgerContext";
-import { formatQty, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
+import { formatQty, getGrandTotal, getMemberExpression, getMemberLedgerItems, getMemberTotal } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function SplitPage() {
   const navigate = useNavigate();
   const { members } = useMembers();
   const { products } = useProducts();
   const { ledgerItems, addLedgerItem, removeLedgerItem } = useLedger();
-  const [quantity, setQuantity] = useState(1.5);
+  const [quantity, setQuantity] = useState(1.0);
   const [activeMember, setActiveMember] = useState(members[0]?.id ?? "");
   const [selectedItem, setSelectedItem] = useState(products[0]?.id ?? "");
   const [expandedGroups, setExpandedGroups] = useState({});
@@ -28,17 +30,12 @@ function SplitPage() {
       icon: product.emoji,
       name: product.name,
       qty: quantity,
-      price: `₹${price.toFixed(2)}`,
+      price: `${CURRENCY_SYMBOL}${price.toFixed(2)}`,
     };
     addLedgerItem(newItem);
   };
 
   const canFinalize = members.length > 0 && products.length > 0;
-
-  const totalAssigned = ledgerItems.reduce(
-    (sum, item) => sum + parseFloat(item.price.replace("₹", "")),
-    0
-  );
 
   const memberReceiptGroups = members
     .map((member) => ({
@@ -58,7 +55,7 @@ function SplitPage() {
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar total="₹248.50" />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mt-4 mb-section-margin">
           <div className="flex items-baseline justify-between mb-2">
@@ -107,7 +104,7 @@ function SplitPage() {
                       isActive ? "text-on-secondary-container" : "text-outline"
                     }`}
                   >
-                    ₹0.00
+                    {CURRENCY_SYMBOL}{getMemberTotal(ledgerItems, member.id).toFixed(2)}
                   </span>
                 </div>
               );
@@ -215,7 +212,7 @@ function SplitPage() {
                       <div>
                       {group.member && (
                         <span className="font-data-mono text-[10px] text-outline">
-                          {getMemberExpression(ledgerItems, group.member.id)} · ₹
+                          {getMemberExpression(ledgerItems, group.member.id)} · {CURRENCY_SYMBOL}
                           {getMemberTotal(ledgerItems, group.member.id).toFixed(2)}
                         </span>
                       )}
@@ -284,25 +281,13 @@ function SplitPage() {
                   );
                 })}
               </div>
-              <div className="bg-surface-container-low p-4 notch-footer">
-                <div className="flex justify-between items-center">
-                  <span className="font-label-bold text-on-surface-variant uppercase text-xs">
-                    Total Assigned
-                  </span>
-                  <span
-                    data-testid="total-assigned"
-                    className="font-data-mono text-secondary-fixed-dim bg-on-secondary-fixed-variant px-2 py-0.5 rounded"
-                  >
-                    ₹{totalAssigned.toFixed(2)}
-                  </span>
-                </div>
-              </div>
             </div>
+            <LedgerSummaryCard ledgerItems={ledgerItems} totalTestId="total-assigned" />
           </div>
         </section>
       </main>
       <button
-        onClick={() => canFinalize && navigate("/summary")}
+        onClick={() => canFinalize && navigate(ROUTES.SUMMARY)}
         disabled={!canFinalize}
         data-testid="finalize-fab"
         className="fixed bottom-24 right-container-margin w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:bg-on-background active:scale-90 transition-all z-40 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-primary disabled:active:scale-100"

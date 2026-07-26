@@ -1,6 +1,6 @@
 {
   "name": "kannaku-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://suvel.github.io/kannaku_sollu",
   "private": true,
   "dependencies": {
@@ -17,7 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:e2e": "playwright test --ui",
+    "test:e2eUI": "playwright test --ui",
+    "test:e2e": "playwright test",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
   },

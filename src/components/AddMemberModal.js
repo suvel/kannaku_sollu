@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MEMBER_NAME_PLACEHOLDER } from "../constants";
 
 function AddMemberModal({ open, onClose, onAdd }) {
   const [name, setName] = useState("");
@@ -44,7 +45,7 @@ function AddMemberModal({ open, onClose, onAdd }) {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Member name"
+              placeholder={MEMBER_NAME_PLACEHOLDER}
               autoFocus
               data-testid="member-name-input"
               className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 font-body-md focus:outline-none focus:border-secondary"

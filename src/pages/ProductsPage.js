@@ -3,18 +3,36 @@ import { useNavigate } from "react-router-dom";
 import TopAppBar from "../components/TopAppBar";
 import BottomNavBar from "../components/BottomNavBar";
 import AddItemModal from "../components/AddItemModal";
+import ConfirmDialog from "../components/ConfirmDialog";
+import LedgerSummaryCard from "../components/LedgerSummaryCard";
 import { useProducts } from "../context/ProductsContext";
+import { useLedger } from "../context/LedgerContext";
+import { getGrandTotal } from "../utils/ledgerSummary";
+import { CURRENCY_SYMBOL, ROUTES } from "../constants";
 
 function ProductsPage() {
   const navigate = useNavigate();
   const { products, addProduct, removeProduct } = useProducts();
+  const { ledgerItems, removeLedgerItemsByProduct } = useLedger();
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
+  const [productPendingRemoval, setProductPendingRemoval] = useState(null);
 
-  const subtotal = products.reduce((acc, p) => acc + p.price, 0);
+  const cancelRemoveProduct = () => setProductPendingRemoval(null);
+
+  const confirmRemoveProduct = () => {
+    if (!productPendingRemoval) return;
+    removeLedgerItemsByProduct(productPendingRemoval.id);
+    removeProduct(productPendingRemoval.id);
+    setProductPendingRemoval(null);
+  };
+
+  const affectedProductEntryCount = productPendingRemoval
+    ? ledgerItems.filter((item) => item.productId === productPendingRemoval.id).length
+    : 0;
 
   return (
     <div className="min-h-screen pb-32 pt-20">
-      <TopAppBar />
+      <TopAppBar total={`${CURRENCY_SYMBOL}${getGrandTotal(ledgerItems).toFixed(2)}`} />
       <main className="px-container-margin max-w-[768px] mx-auto">
         <section className="mb-6 flex justify-between items-end mt-4">
           <div>
@@ -33,7 +51,7 @@ function ProductsPage() {
               className="bg-surface-container-lowest border border-outline-variant rounded-xl p-card-padding flex flex-col items-center text-center shadow-sm relative group hover:border-secondary transition-colors"
             >
               <button
-                onClick={() => removeProduct(product.id)}
+                onClick={() => setProductPendingRemoval(product)}
                 className="absolute top-2 right-2 text-on-surface-variant hover:text-error transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
@@ -44,11 +62,11 @@ function ProductsPage() {
                   {product.name}
                 </p>
                 <p className="font-data-mono text-data-mono text-secondary mb-3">
-                  ₹{product.price.toFixed(2)}
+                  {CURRENCY_SYMBOL}{product.price.toFixed(2)}
                 </p>
               </div>
               <button
-                onClick={() => removeProduct(product.id)}
+                onClick={() => setProductPendingRemoval(product)}
                 data-testid={`remove-product-${product.id}`}
                 className="font-label-bold text-label-bold text-error uppercase mt-auto hover:opacity-70"
               >
@@ -68,40 +86,11 @@ function ProductsPage() {
           </button>
         </div>
 
-        <section className="mt-section-margin bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden shadow-sm">
-          <div className="bg-secondary text-on-primary px-card-padding py-2 font-label-bold text-label-bold uppercase">
-            Quick Ledger Summary
-          </div>
-          <div className="p-card-padding space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="font-body-md text-body-md text-on-surface-variant">
-                Subtotal ({products.length} items)
-              </span>
-              <span className="font-data-mono text-data-mono">₹{subtotal.toFixed(2)}</span>
-            </div>
-            <div className="dashed-divider"></div>
-            <div className="flex justify-between items-center">
-              <span className="font-body-md text-body-md text-on-surface-variant">
-                Service Fee (10%)
-              </span>
-              <span className="font-data-mono text-data-mono">₹9.12</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="font-body-md text-body-md text-on-surface-variant">
-                Tax (VAT 21%)
-              </span>
-              <span className="font-data-mono text-data-mono">₹28.08</span>
-            </div>
-          </div>
-          <div className="bg-secondary-container/30 px-card-padding py-4 receipt-notched flex justify-between items-center">
-            <span className="font-headline-md text-headline-md text-primary">TOTAL</span>
-            <span className="font-headline-md text-headline-md text-secondary">₹128.45</span>
-          </div>
-        </section>
+        <LedgerSummaryCard ledgerItems={ledgerItems} />
 
         <div className="mt-8">
           <button
-            onClick={() => navigate("/members")}
+            onClick={() => navigate(ROUTES.MEMBERS)}
             className="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform z-40"
           >
             <span className="material-symbols-outlined text-2xl">arrow_forward</span>
@@ -115,6 +104,21 @@ function ProductsPage() {
           addProduct(payload);
           setIsAddItemOpen(false);
         }}
+      />
+      <ConfirmDialog
+        open={productPendingRemoval !== null}
+        title={productPendingRemoval ? `Remove ${productPendingRemoval.name}?` : ""}
+        message={
+          productPendingRemoval
+            ? affectedProductEntryCount === 0
+              ? "Are you sure you want to remove this item?"
+              : `This will permanently delete ${affectedProductEntryCount} ledger ${
+                  affectedProductEntryCount === 1 ? "entry" : "entries"
+                } calculated for this item. This cannot be undone.`
+            : ""
+        }
+        onConfirm={confirmRemoveProduct}
+        onClose={cancelRemoveProduct}
       />
       <BottomNavBar />
     </div>
